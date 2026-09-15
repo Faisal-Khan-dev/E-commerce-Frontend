@@ -51,7 +51,7 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
 
         const response = await productService.getAllProducts({
           page: currentPage,
-          limit: 12,
+          limit: 10,
           sort: sortBy,
           category: categoryQuery,
           search: searchTerm || undefined,

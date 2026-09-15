@@ -25,6 +25,12 @@ const PAYMENT_OPTIONS: {
   icon: React.ReactNode;
 }[] = [
   {
+    id: "COD",
+    label: "Cash on Delivery",
+    subtitle: "Pay when your package arrives at your door",
+    icon: <Truck className="w-4 h-4 text-zinc-500 stroke-[1.5]" />,
+  },
+  {
     id: "Stripe",
     label: "Stripe",
     subtitle: "Credit / Debit Card via Stripe",
@@ -41,12 +47,6 @@ const PAYMENT_OPTIONS: {
     label: "EasyPaisa",
     subtitle: "Pay securely via EasyPaisa mobile wallet",
     icon: <Wallet className="w-4 h-4 text-zinc-500 stroke-[1.5]" />,
-  },
-  {
-    id: "COD",
-    label: "Cash on Delivery",
-    subtitle: "Pay when your package arrives at your door",
-    icon: <Truck className="w-4 h-4 text-zinc-500 stroke-[1.5]" />,
   },
 ];
 

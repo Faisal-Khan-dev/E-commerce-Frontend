@@ -121,7 +121,7 @@ export default function OrderSuccessPage() {
             Order Placed Successfully!
           </h1>
           <p className="text-zinc-400 text-xs sm:text-sm font-light max-w-sm mx-auto leading-relaxed text-balance">
-            Thank you for choosing Aureum Naturals. Your journey to wellness
+            Thank you for choosing Healthy Basket. Your journey to wellness
             begins here.
           </p>
         </div>

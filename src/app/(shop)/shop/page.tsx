@@ -10,7 +10,7 @@ export default async function ShopPage() {
   let initialPagination = {
     total: 0,
     page: 1,
-    limit: 12,
+    limit: 10,
     pages: 0,
   };
 
@@ -19,7 +19,7 @@ export default async function ShopPage() {
     
     // Fetch products statically during build / background regeneration using axios instance
     const res = await axiosInstance.get('/products', {
-      params: { page: 1, limit: 12, sort: 'newest' },
+      params: { page: 1, limit: 10, sort: 'newest' },
     });
 
     if (res.status === 200) {

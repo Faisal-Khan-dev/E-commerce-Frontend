@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CheckoutSteps } from "@/components/sections/CheckoutSteps";
-import { ShippingForm } from "@/components/sections/ShippingForm";
+import { ShippingForm, ShippingData } from "@/components/sections/ShippingForm";
 import { PaymentForm, PaymentMethod } from "@/components/sections/PaymentForm";
 import {
   OrderSummary,
@@ -51,17 +51,20 @@ export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart();
   const { user, isAuthenticated, loading: authLoading } = useAuth();
 
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("Stripe");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("COD");
   const [screenshotFile, setScreenshotFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
 
-  const [shippingInfo, setShippingInfo] = useState({
+  const [shippingInfo, setShippingInfo] = useState<ShippingData>({
     fullName: "",
     address: "",
+    houseNo: "",
+    area: "",
     city: "",
     zipCode: "",
     phone: "",
+    whatsapp: "",
   });
 
   const [cardInfo, setCardInfo] = useState<CardData>({
@@ -69,12 +72,43 @@ export default function CheckoutPage() {
     expiry: "",
     cvc: "",
   });
+
   // Protect route based on current auth loading state
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       router.push("/login?redirect=/checkout");
     }
   }, [authLoading, isAuthenticated, router]);
+
+  // Auto-restore saved shipping details for logged-in user on load
+  useEffect(() => {
+    if (user?._id) {
+      const savedData = localStorage.getItem(`user_shipping_${user._id}`);
+      if (savedData) {
+        try {
+          const parsed = JSON.parse(savedData);
+          if (parsed && typeof parsed === "object") {
+            setShippingInfo((prev) => ({ ...prev, ...parsed }));
+          }
+        } catch (err) {
+          console.error("Failed to load saved shipping details:", err);
+        }
+      } else {
+        // Pre-fill user's name from account profile if available
+        const nameFromAuth = [user.firstName, user.lastName].filter(Boolean).join(" ");
+        if (nameFromAuth) {
+          setShippingInfo((prev) => ({ ...prev, fullName: nameFromAuth }));
+        }
+      }
+    }
+  }, [user?._id]);
+
+  // Auto-save shipping details whenever user edits them
+  useEffect(() => {
+    if (user?._id && (shippingInfo.fullName || shippingInfo.address || shippingInfo.phone)) {
+      localStorage.setItem(`user_shipping_${user._id}`, JSON.stringify(shippingInfo));
+    }
+  }, [user?._id, shippingInfo]);
 
   // Transform cart context data structures safely to visual components specs
   const checkoutItems: CheckoutProduct[] = items.map((item) => ({
@@ -165,7 +199,7 @@ export default function CheckoutPage() {
       console.error("Checkout submission processing halted:", error);
       setCheckoutError(
         getErrorMessage(error) ||
-          "An unexpected error occurred while placing your order. Please check your fields and try again.",
+        "An unexpected error occurred while placing your order. Please check your fields and try again.",
       );
     } finally {
       setIsSubmitting(false);
@@ -221,7 +255,7 @@ export default function CheckoutPage() {
 
     throw new Error(
       paymentResponse.message ||
-        "Payment gateway failed to provide a valid checkout URL.",
+      "Payment gateway failed to provide a valid checkout URL.",
     );
   };
 

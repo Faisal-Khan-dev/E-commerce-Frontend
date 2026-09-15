@@ -21,7 +21,6 @@ export default function ShopSidebar({
   const [error, setError] = useState("");
   const isInitialSyncDone = useRef(false);
 
-  // 1. Fetch available categories directly from API products database
   useEffect(() => {
     let isMounted = true;
     const fetchCategories = async () => {
@@ -34,7 +33,6 @@ export default function ShopSidebar({
           response.success &&
           Array.isArray(response.categories)
         ) {
-          // Deep deduplication matching values uniformly
           const uniqueMap = new Map<string, string>();
           response.categories.forEach((cat) => {
             if (typeof cat === "string" && cat.trim()) {
@@ -48,7 +46,6 @@ export default function ShopSidebar({
           const finalizedList = Array.from(uniqueMap.values());
           if (isMounted) setCategories(finalizedList);
 
-          // Initial URL sync for single or multiple category query params
           if (categoryParam && !isInitialSyncDone.current) {
             isInitialSyncDone.current = true;
             const urlCats = categoryParam
@@ -98,46 +95,50 @@ export default function ShopSidebar({
   };
 
   return (
-    <div className="space-y-8 sticky top-6">
-      {/* Available Categories Checkboxes */}
+    <div className="space-y-6 sticky top-6">
       <div>
-        <h4 className="text-[11px] font-bold tracking-[0.15em] uppercase text-zinc-400 mb-4">
+        <h4 className="text-[11px] font-bold tracking-[0.15em] uppercase text-[#312117] mb-4 pb-1">
           Categories
         </h4>
 
         {loading ? (
-          <p className="text-xs text-zinc-400 font-light mb-3">
+          <p className="text-xs text-stone-400 font-light mb-3">
             Loading categories...
           </p>
         ) : error ? (
           <p className="text-xs text-red-500 mb-3">{error}</p>
         ) : categories.length === 0 ? (
-          <p className="text-xs text-zinc-400 font-light mb-3">
+          <p className="text-xs text-stone-400 font-light mb-3">
             No categories available.
           </p>
         ) : null}
 
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {categories.map((cat) => {
             const checked = selectedCategories.some(
               (c) => c.toLowerCase().trim() === cat.toLowerCase().trim(),
             );
 
             return (
-              <label
+              <div
                 key={cat}
-                className="flex items-center gap-3 text-xs font-medium text-zinc-700 cursor-pointer select-none group"
+                onClick={() => handleCheckboxToggle(cat)}
+                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs cursor-pointer select-none transition-all duration-200 bg-white border shadow-xs hover:shadow-sm ${
+                  checked
+                    ? "border-[#312117] text-[#312117] font-semibold"
+                    : "border-stone-200/90 text-stone-700 hover:text-stone-900 hover:border-stone-300 font-medium"
+                }`}
               >
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onChange={() => handleCheckboxToggle(cat)}
-                  className="w-4 h-4 rounded border-zinc-300 bg-white text-emerald-600 focus:ring-0 accent-emerald-700 cursor-pointer"
-                />
-                <span className="group-hover:text-zinc-900 transition-colors">
-                  {cat}
-                </span>
-              </label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    readOnly
+                    className="w-4 h-4 rounded border-stone-300 bg-white text-[#312117] focus:ring-0 accent-[#312117] cursor-pointer"
+                  />
+                  <span>{cat}</span>
+                </div>
+              </div>
             );
           })}
         </div>

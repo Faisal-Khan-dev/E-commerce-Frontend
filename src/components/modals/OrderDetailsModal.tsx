@@ -1,7 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { X, Loader2, Calendar, ShoppingBag, ShieldCheck, Image as ImageIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  X,
+  Loader2,
+  Calendar,
+  ShoppingBag,
+  ShieldCheck,
+  Image as ImageIcon,
+  XCircle,
+  AlertTriangle,
+  CheckCircle2,
+} from "lucide-react";
+import axiosInstance from "@/lib/axios";
 
 interface OrderDetailsModalProps {
   isOpen: boolean;
@@ -10,6 +21,7 @@ interface OrderDetailsModalProps {
   orderData: any;
   loading: boolean;
   error: string;
+  onOrderUpdated?: () => void;
 }
 
 export default function OrderDetailsModal({
@@ -19,8 +31,13 @@ export default function OrderDetailsModal({
   orderData,
   loading,
   error,
+  onOrderUpdated,
 }: OrderDetailsModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
+  const [showConfirmCancel, setShowConfirmCancel] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
+  const [cancelError, setCancelError] = useState("");
+  const [cancelSuccess, setCancelSuccess] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -30,10 +47,63 @@ export default function OrderDetailsModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
+  const [statusState, setStatusState] = useState<string>("");
+
+  useEffect(() => {
+    if (orderData?.status) {
+      setStatusState(orderData.status);
+    }
+  }, [orderData]);
+
+  // Reset modal internal cancellation state when modal opens or closes
+  useEffect(() => {
+    if (!isOpen) {
+      setShowConfirmCancel(false);
+      setCancelError("");
+      setCancelSuccess(false);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const screenshotUrl =
     orderData?.paymentScreenshot || orderData?.paymentId?.paymentScreenshot;
+
+  const currentStatus = (statusState || orderData?.status || "").toLowerCase();
+  const canCancel = currentStatus === "processing" || currentStatus === "confirmed" || currentStatus === "shipped";
+
+  const handleCancelOrder = async () => {
+    if (!orderData?._id) return;
+    setIsCancelling(true);
+    setCancelError("");
+
+    try {
+      const res = await axiosInstance.patch(`/orders/${orderData._id}/status`, {
+        status: "cancelled",
+      });
+
+      if (res.data?.success) {
+        setStatusState("cancelled");
+        if (orderData) {
+          orderData.status = "cancelled";
+        }
+        setCancelSuccess(true);
+        setShowConfirmCancel(false);
+        if (onOrderUpdated) {
+          onOrderUpdated();
+        }
+      } else {
+        throw new Error(res.data?.message || "Failed to cancel order.");
+      }
+    } catch (err: any) {
+      console.error("Cancellation error:", err);
+      setCancelError(
+        err?.response?.data?.message || err?.message || "Error cancelling order. Please try again."
+      );
+    } finally {
+      setIsCancelling(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -50,7 +120,7 @@ export default function OrderDetailsModal({
       >
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-zinc-400 hover:text-zinc-600 transition-colors"
+          className="absolute top-5 right-5 text-zinc-400 hover:text-zinc-600 transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
@@ -82,9 +152,14 @@ export default function OrderDetailsModal({
         ) : (
           <div className="space-y-6">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] font-bold tracking-[0.15em] text-[#4a6b36] bg-[#e2f0d9] px-2.5 py-0.5 rounded-full uppercase">
-                  {orderData.status || "Processing"}
+              <div className="flex items-center justify-between mb-1">
+                <span
+                  className={`text-[10px] font-bold tracking-[0.15em] px-2.5 py-0.5 rounded-full uppercase ${currentStatus === "cancelled"
+                      ? "text-red-700 bg-red-100"
+                      : "text-[#4a6b36] bg-[#e2f0d9]"
+                    }`}
+                >
+                  {statusState || orderData.status || "Processing"}
                 </span>
               </div>
               <h3 className="font-serif text-xl sm:text-2xl text-zinc-900">
@@ -95,6 +170,13 @@ export default function OrderDetailsModal({
                 {orderData._id}
               </p>
             </div>
+
+            {cancelSuccess && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-800 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Order has been successfully cancelled. Email notifications sent to customer and admin.</span>
+              </div>
+            )}
 
             <hr className="border-zinc-200/60" />
 
@@ -179,6 +261,70 @@ export default function OrderDetailsModal({
               </div>
             </div>
 
+            {/* Cancel Order Action Block */}
+            {canCancel && !showConfirmCancel && (
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmCancel(true)}
+                  className="w-full py-3 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <XCircle className="w-4 h-4 text-red-600" />
+                  <span>Cancel Order</span>
+                </button>
+              </div>
+            )}
+
+            {/* Cancellation Confirmation Prompt */}
+            {showConfirmCancel && (
+              <div className="bg-red-50/90 border border-red-200 rounded-xl p-4 text-left space-y-3 animate-in fade-in duration-150">
+                <div className="flex items-start gap-2.5">
+                  <AlertTriangle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                  <div>
+                    <h5 className="text-xs font-bold text-red-900 uppercase tracking-wider">
+                      Are you sure you want to cancel this order?
+                    </h5>
+                    <p className="text-xs text-red-700 font-light mt-1">
+                      Once cancelled, an automated notification email will be sent to both you and our support team.
+                    </p>
+                  </div>
+                </div>
+
+                {cancelError && (
+                  <p className="text-xs text-red-600 font-medium">{cancelError}</p>
+                )}
+
+                <div className="flex items-center gap-3 pt-1">
+                  <button
+                    type="button"
+                    onClick={handleCancelOrder}
+                    disabled={isCancelling}
+                    className="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold uppercase tracking-wider rounded-md transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    {isCancelling ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>Cancelling...</span>
+                      </>
+                    ) : (
+                      <span>Cancel Order</span>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowConfirmCancel(false);
+                      setCancelError("");
+                    }}
+                    disabled={isCancelling}
+                    className="px-4 py-2.5 bg-white border border-zinc-300 text-zinc-700 hover:bg-zinc-50 text-xs font-semibold uppercase tracking-wider rounded-md transition-colors cursor-pointer"
+                  >
+                    Keep Order
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="flex items-center gap-2 text-[11px] text-zinc-400 font-light justify-center pt-2 bg-white border border-zinc-100 py-2 rounded-md">
               <ShieldCheck className="w-4 h-4 text-zinc-400" /> Secure checkout
               verified by client ledger pipelines.
@@ -189,4 +335,5 @@ export default function OrderDetailsModal({
     </div>
   );
 }
+
 

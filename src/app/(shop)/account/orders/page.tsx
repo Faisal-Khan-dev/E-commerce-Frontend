@@ -1,14 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useCallback, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { OrderCard } from "@/components/cards/OrderCard";
 import { useAuth } from "@/context/AuthContext";
 import axiosInstance from "@/lib/axios";
 import OrderDetailsModal from "@/components/modals/OrderDetailsModal";
-import { Loader2, AlertCircle, ShoppingBag } from "lucide-react";
+import { Loader2, AlertCircle, ShoppingBag, ChevronLeft, ChevronRight } from "lucide-react";
 
-// Standard formatting interface map mirroring Backend database document schema frameworks
 export interface PastOrder {
   id: string;
   name: string;
@@ -19,30 +18,44 @@ export interface PastOrder {
   slug?: string;
 }
 
-export default function CustomerOrdersPage() {
+function CustomerOrdersContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, isAuthenticated, loading: authLoading } = useAuth();
 
-  // Primary component tracking hook definitions
+  const typeParam = searchParams.get("type") || "active";
+  const isHistoryTab = typeParam === "history";
+  const statusQuery = isHistoryTab ? "history" : "active";
+
   const [orders, setOrders] = useState<PastOrder[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pagination, setPagination] = useState({
+    total: 0,
+    page: 1,
+    limit: 10,
+    pages: 1,
+  });
 
-  // Target context references for structural modals
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [selectedOrderData, setSelectedOrderData] = useState<any>(null);
   const [modalLoading, setModalLoading] = useState<boolean>(false);
   const [modalError, setModalError] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  // Core background tracking hook verifying systemic user details
+  // Reset page to 1 when switching tabs
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [typeParam]);
+
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       router.push("/login?redirect=/account/orders");
     }
   }, [isAuthenticated, authLoading, router]);
 
-  // Transform backend multi-item payloads down into flat readable layout formats
+  // Server-side database pagination fetcher
   const fetchCustomerOrders = useCallback(async () => {
     if (!user) return;
     setLoading(true);
@@ -50,20 +63,24 @@ export default function CustomerOrdersPage() {
 
     try {
       const userId = user._id;
-      const response = await axiosInstance.get(`/orders/customer/${userId}`);
+      const response = await axiosInstance.get(`/orders/customer/${userId}`, {
+        params: {
+          page: currentPage,
+          limit: 10,
+          status: statusQuery,
+        },
+      });
 
       if (response.data && response.data.success) {
         const parsedOrders: PastOrder[] = [];
 
-        // Flatten multi-tiered systemic layout array trees safely down into flat client lists
         response.data.orders.forEach((rawOrder: any) => {
           if (rawOrder.orderItems && rawOrder.orderItems.length > 0) {
             rawOrder.orderItems.forEach((item: any) => {
-              // Extract data parameters from item arrays or nested product profiles
               const itemProductSlug = item.productId?.slug || item.slug || "";
 
               parsedOrders.push({
-                id: rawOrder._id, // Set the original system order ID reference
+                id: rawOrder._id,
                 name: item.name || "Organic Product Specimen",
                 price: item.price || 0,
                 status: rawOrder.status || "processing",
@@ -82,21 +99,22 @@ export default function CustomerOrdersPage() {
         });
 
         setOrders(parsedOrders);
+        if (response.data.pagination) {
+          setPagination(response.data.pagination);
+        }
       } else {
-        setError(
-          "Could not trace client orders records mapping payload templates.",
-        );
+        setError("Could not trace client orders records mapping payload templates.");
       }
     } catch (err: any) {
       console.error("Error matching transaction indexes:", err);
       setError(
         err?.response?.data?.message ||
-        "Failed to establish communication connections.",
+        "Failed to establish communication connections."
       );
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, currentPage, statusQuery]);
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -104,7 +122,6 @@ export default function CustomerOrdersPage() {
     }
   }, [isAuthenticated, user, fetchCustomerOrders]);
 
-  // Fetch unique item attributes safely by referencing the exact active object key
   const handleViewOrderDetails = async (orderId: string) => {
     setSelectedOrderId(orderId);
     setIsModalOpen(true);
@@ -120,39 +137,48 @@ export default function CustomerOrdersPage() {
         setModalError("Unable to open matching order parameters sheet layout.");
       }
     } catch (err: any) {
-      console.error(
-        "Error indexing targeted single transaction mapping row:",
-        err,
-      );
+      console.error("Error indexing targeted single transaction mapping row:", err);
       setModalError(
-        err?.response?.data?.message || "Internal transmission system fault.",
+        err?.response?.data?.message || "Internal transmission system fault."
       );
     } finally {
       setModalLoading(false);
     }
   };
 
-  // Safe fallback pipeline to resolve slug properties matching explicit layout contexts
   const handleBuyAgainRouting = (orderItem: PastOrder) => {
     const activeRouteSlug =
       orderItem.slug || orderItem.name.toLowerCase().replace(/ /g, "-");
     router.push(`/shop/${activeRouteSlug}`);
   };
 
+  const handleOrderUpdated = () => {
+    if (selectedOrderId) {
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === selectedOrderId
+            ? { ...order, status: "cancelled" }
+            : order
+        )
+      );
+    }
+    fetchCustomerOrders();
+  };
+
   if (authLoading || loading) {
     return (
-      <main className="md:col-span-9 lg:col-span-9 flex flex-col items-center justify-center py-24 space-y-3">
+      <div className="flex-1 w-full flex flex-col items-center justify-center py-24 space-y-3">
         <Loader2 className="w-8 h-8 animate-spin text-zinc-700" />
         <p className="text-xs uppercase tracking-widest text-zinc-400 font-medium">
-          Bringing up your purchase history...
+          Bringing up your orders...
         </p>
-      </main>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <main className="md:col-span-9 lg:col-span-9 py-16 px-4 text-center">
+      <div className="flex-1 w-full py-16 px-4 text-center">
         <div className="bg-white border border-zinc-200 max-w-md mx-auto p-8 rounded-xl shadow-xs">
           <AlertCircle className="w-10 h-10 text-red-500 mx-auto mb-4" />
           <h3 className="font-serif text-lg text-zinc-900 mb-2">
@@ -166,15 +192,22 @@ export default function CustomerOrdersPage() {
             Retry Connection Request
           </button>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="md:col-span-9 lg:col-span-9 space-y-6">
-      <h2 className="text-xl font-serif text-zinc-900 tracking-wide text-left pb-1.5">
-        Past Orders
-      </h2>
+    <div className="flex-1 w-full space-y-6">
+      <div>
+        <h2 className="text-xl font-serif text-zinc-900 tracking-wide text-left pb-1">
+          {isHistoryTab ? "Order History" : "Orders"}
+        </h2>
+        <p className="text-xs text-zinc-400 font-light text-left">
+          {isHistoryTab
+            ? "View all past purchase records and order history placed to date"
+            : "Track your active processing, confirmed, and shipped orders"}
+        </p>
+      </div>
 
       {orders.length === 0 ? (
         <div className="text-center py-16 px-4 bg-[#fffdfb] border border-dashed border-zinc-200 rounded-xl max-w-2xl mx-auto flex flex-col items-center justify-center shadow-xs">
@@ -182,11 +215,12 @@ export default function CustomerOrdersPage() {
             <ShoppingBag className="w-6 h-6" />
           </div>
           <h3 className="font-serif text-lg text-zinc-900 mb-2">
-            Your basket is empty
+            {isHistoryTab ? "Your Basket is Empty" : "No Active Orders in Progress"}
           </h3>
           <p className="text-sm text-zinc-500 font-light max-w-sm mb-8 leading-relaxed">
-            You haven't placed any orders yet. Explore our collection of premium
-            organic products to start filling your healthy basket!
+            {isHistoryTab
+              ? "You haven't placed any orders yet. Explore our collection of premium organic products to start filling your healthy basket!"
+              : "You currently have no processing, confirmed, or shipped orders. Check your Order History link in the sidebar to view all past orders."}
           </p>
           <button
             onClick={() => router.push("/shop")}
@@ -196,19 +230,63 @@ export default function CustomerOrdersPage() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {orders.map((order, idx) => (
-            <OrderCard
-              key={`${order.id}-${idx}`}
-              order={order}
-              onViewDetails={() => handleViewOrderDetails(order.id)}
-              onBuyAgain={() => handleBuyAgainRouting(order)}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {orders.map((order, idx) => (
+              <OrderCard
+                key={`${order.id}-${idx}`}
+                order={order}
+                onViewDetails={() => handleViewOrderDetails(order.id)}
+                onBuyAgain={() => handleBuyAgainRouting(order)}
+              />
+            ))}
+          </div>
+
+          {/* MongoDB Server-Side Pagination Bar */}
+          {pagination.pages > 1 && (
+            <nav
+              className="flex justify-center items-center gap-2 mt-10 pt-6 border-t border-stone-200/60"
+              aria-label="Orders Pagination"
+            >
+              <button
+                type="button"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="p-2 border border-zinc-300 rounded-full text-zinc-600 hover:bg-zinc-900 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+
+              {[...Array(pagination.pages)].map((_, i) => {
+                const page = i + 1;
+                return (
+                  <button
+                    key={page}
+                    type="button"
+                    onClick={() => setCurrentPage(page)}
+                    className={`w-9 h-9 flex items-center justify-center rounded-full text-xs font-medium transition-colors cursor-pointer ${
+                      currentPage === page
+                        ? "bg-[#312117] text-white font-semibold shadow-xs"
+                        : "text-zinc-600 hover:bg-zinc-200/50"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+
+              <button
+                type="button"
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pagination.pages))}
+                disabled={currentPage === pagination.pages}
+                className="p-2 border border-zinc-300 rounded-full text-zinc-600 hover:bg-zinc-900 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </nav>
+          )}
+        </>
       )}
-
-
 
       <OrderDetailsModal
         isOpen={isModalOpen}
@@ -217,7 +295,25 @@ export default function CustomerOrdersPage() {
         orderData={selectedOrderData}
         loading={modalLoading}
         error={modalError}
+        onOrderUpdated={handleOrderUpdated}
       />
-    </main>
+    </div>
+  );
+}
+
+export default function CustomerOrdersPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex-1 w-full flex flex-col items-center justify-center py-24 space-y-3">
+          <Loader2 className="w-8 h-8 animate-spin text-zinc-700" />
+          <p className="text-xs uppercase tracking-widest text-zinc-400 font-medium">
+            Bringing up your orders...
+          </p>
+        </div>
+      }
+    >
+      <CustomerOrdersContent />
+    </Suspense>
   );
 }

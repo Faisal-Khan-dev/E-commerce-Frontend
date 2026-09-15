@@ -477,8 +477,8 @@ export default function ProductDetailPage({ params }: PageProps) {
                 },
                 {
                   icon: <Truck className="w-4 h-4 text-[#4a6b36]" />,
-                  title: "Free Shipping",
-                  subtitle: "On orders over threshold",
+                  title: "Fast Delivery",
+                  subtitle: "Nationwide 24-48 Hours",
                 },
                 {
                   icon: <Shield className="w-4 h-4 text-[#4a6b36]" />,

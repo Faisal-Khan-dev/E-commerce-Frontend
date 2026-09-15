@@ -119,11 +119,13 @@ export default function CartPage() {
                     {/* Extended Calculated Row Pricing Information */}
                     <div className="sm:text-right flex sm:flex-col justify-between sm:justify-end items-end shrink-0">
                       <span className="font-serif text-base sm:text-lg font-medium text-zinc-900">
-                        Rs. {Math.round(item.price * item.quantity).toLocaleString()}
+                        Rs. {Math.round(item.price).toLocaleString()}
                       </span>
-                      <span className="text-[11px] text-zinc-400 font-light mt-1">
-                        Rs. {Math.round(item.price).toLocaleString()} each
-                      </span>
+                      {item.quantity > 1 && (
+                        <span className="text-[11px] text-zinc-400 font-light mt-1">
+                          Subtotal: Rs. {Math.round(item.price * item.quantity).toLocaleString()}
+                        </span>
+                      )}
                     </div>
                   </div>
 
