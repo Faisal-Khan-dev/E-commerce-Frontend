@@ -75,13 +75,17 @@ export default function NewsletterBanner() {
               <button
                 type="submit"
                 disabled={status === "loading" || status === "success"}
-                className="px-8 py-3.5 bg-white text-[#36251c] hover:bg-zinc-100 text-xs font-semibold uppercase tracking-widest rounded-md transition-colors duration-300 shadow-md whitespace-nowrap disabled:opacity-70"
+                data-hover-bg="#2b1d16"
+                data-hover-text="#ffffff"
+                className="px-8 py-3.5 bg-white text-[#36251c] text-xs font-semibold uppercase tracking-widest rounded-md transition-colors duration-300 shadow-md whitespace-nowrap disabled:opacity-70 cursor-pointer"
               >
-                {status === "loading"
-                  ? "SUBSCRIBING..."
-                  : status === "success"
-                    ? "SUBSCRIBED"
-                    : "SUBSCRIBE"}
+                <span>
+                  {status === "loading"
+                    ? "SUBSCRIBING..."
+                    : status === "success"
+                      ? "SUBSCRIBED"
+                      : "SUBSCRIBE"}
+                </span>
               </button>
             </form>
 

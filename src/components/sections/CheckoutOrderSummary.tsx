@@ -88,11 +88,15 @@ export function OrderSummary({
         <button
           type="submit"
           disabled={isSubmitting || items.length === 0}
-          className="w-full py-4 bg-[#312117] hover:bg-[#432f22] cursor-pointer text-white text-xs font-semibold uppercase tracking-widest rounded-md shadow-md transition-all duration-200 active:scale-[0.99] mb-6 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+          data-hover-bg="#d4a373"
+          data-hover-text="#312117"
+          className="w-full py-4 bg-[#312117] cursor-pointer text-white text-xs font-semibold uppercase tracking-widest rounded-md shadow-md transition-colors duration-200 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting
-            ? "Processing..."
-            : `Place Order`}
+          <span>
+            {isSubmitting
+              ? "Processing..."
+              : `Place Order`}
+          </span>
         </button>
 
         <div className="flex justify-between items-center px-2 pt-2 border-t border-zinc-200/60 text-zinc-400 text-[8px] font-bold uppercase tracking-widest">

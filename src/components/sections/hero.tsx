@@ -8,7 +8,7 @@ export default function HeroSection() {
       {/* Background Image with Dark Vignette Overlay */}
       <div className="absolute inset-0 z-0 select-none">
         <Image
-          src="/hero-section-img.png" // Replace with your actual background image path
+          src="/hero-section-img.png"
           alt="Artisanal selection of premium almonds and walnuts"
           fill
           priority
@@ -23,11 +23,11 @@ export default function HeroSection() {
       {/* Content Container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 w-full">
         <div className="max-w-2xl text-left">
-          <span className="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-[#FBDDCA]-500/90 block mb-3 sm:mb-4">
+          <span className="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-[#FBDDCA]/90 block mb-3 sm:mb-4">
             Artisanal Sourcing
           </span>
 
-          <h1 className="text-4xl sm:text-5xl  lg:text-7xl font-bold font-serif text-zinc-100  tracking-wide leading-[1.1] mb-6">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold font-serif text-zinc-100 tracking-wide leading-[1.1] mb-6">
             Purity from the Source
           </h1>
 
@@ -41,15 +41,20 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
             <Link
               href="/shop"
-              className="px-8 py-3.5 bg-[#402e22] text-center text-zinc-100 text-sm font-medium tracking-wide rounded-sm hover:bg-[#523d2e] transition-colors duration-300 shadow-lg"
+              data-ripple="true"
+              data-hover-text="#000000"
+              className="btn px-8 py-3.5 bg-[#402e22] text-center text-zinc-100 text-sm font-semibold tracking-wide rounded-md shadow-lg cursor-pointer inline-flex items-center justify-center"
             >
-              SHOP COLLECTION
+              <span>SHOP COLLECTION</span>
             </Link>
             <Link
-              href="/story"
-              className="px-8 py-3.5 border border-zinc-500 text-center text-zinc-100 text-sm font-medium tracking-wide rounded-sm hover:bg-zinc-100/10 hover:border-zinc-300 transition-all duration-300"
+              href="/about-us"
+              data-ripple="true"
+              data-hover-bg="#ffffff"
+              data-hover-text="#000000"
+              className="btn px-8 py-3.5 border border-zinc-500/80 text-center text-zinc-100 text-sm font-semibold tracking-wide rounded-md cursor-pointer inline-flex items-center justify-center"
             >
-              OUR STORY
+              <span>OUR STORY</span>
             </Link>
           </div>
         </div>

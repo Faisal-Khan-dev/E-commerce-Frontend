@@ -206,13 +206,17 @@ export function ContactFormPanel() {
               <button
                 type="submit"
                 disabled={status === "loading" || status === "success"}
-                className="px-8 py-3.5 bg-[#312117] hover:bg-[#432f22] text-white text-xs font-semibold tracking-widest uppercase rounded-md shadow-md transition-all duration-200 active:scale-99 disabled:opacity-60"
+                data-hover-bg="#d4a373"
+                data-hover-text="#312117"
+                className="px-8 py-3.5 bg-[#312117] text-white text-xs font-semibold tracking-widest uppercase rounded-md shadow-md transition-all duration-200 active:scale-99 disabled:opacity-60 cursor-pointer"
               >
-                {status === "loading"
-                  ? "Sending..."
-                  : status === "success"
-                    ? "Sent Successfully"
-                    : "Send Inquiry"}
+                <span>
+                  {status === "loading"
+                    ? "Sending..."
+                    : status === "success"
+                      ? "Sent Successfully"
+                      : "Send Inquiry"}
+                </span>
               </button>
             </div>
 

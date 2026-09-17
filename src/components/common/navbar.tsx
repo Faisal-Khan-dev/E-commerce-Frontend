@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 // Import authentication tracking context elements
 import { useAuth } from "@/context/AuthContext";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const navigationItems = [
   { label: "Home", href: "/" },
@@ -82,7 +82,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="border-b border-black/10 bg-white">
+    <header className="border-b border-black/10 bg-white relative z-40">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-5 sm:px-6 lg:px-8">
         <Link
           href="/"
@@ -117,48 +117,63 @@ export function Navbar() {
           })}
         </nav>
 
-        <div className="flex items-center gap-4 text-black">
-          <button
-            type="button"
-            onClick={handleAccountClick}
-            aria-label="Account"
-            className="transition-opacity hover:opacity-70 cursor-pointer"
-          >
-            <UserIcon />
-          </button>
-
-          {/* Cart button with badge */}
-          <Link href="/cart" aria-label={`Cart (${totalItems} items)`}>
-            {/* This div is the ref target for the fly-to animation */}
-            <div
-              ref={cartIconRef}
-              className="relative transition-opacity hover:opacity-70"
+        <div className="flex items-center gap-3 text-black">
+          {/* Account Profile Button with Tooltip */}
+          <div className="relative group/account">
+            <button
+              type="button"
+              onClick={handleAccountClick}
+              data-no-ripple="true"
+              aria-label="Account"
+              className="p-2.5 rounded-full hover:bg-zinc-100 transition-all duration-200 cursor-pointer flex items-center justify-center text-zinc-800 hover:text-black"
             >
-              <CartIcon />
-              {totalItems > 0 && (
-                <span
-                  key={totalItems} // re-mount to retrigger scale animation on count change
-                  className={`
-                    absolute -top-2 -right-2.5
-                    min-w-[18px] h-[18px] px-1
-                    flex items-center justify-center
-                    rounded-full
-                    bg-[#312117] text-white
-                    text-[10px] font-bold leading-none
-                    select-none
-                    ${pulse ? "animate-cart-pop" : ""}
-                  `}
-                  style={{
-                    animation: pulse
-                      ? "cartPop 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both"
-                      : undefined,
-                  }}
-                >
-                  {totalItems > 99 ? "99+" : totalItems}
-                </span>
-              )}
+              <UserIcon />
+            </button>
+            {/* Tooltip */}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1.5 bg-[#1a120c]/90 backdrop-blur-md text-white text-[11px] font-medium rounded-lg shadow-xl border border-amber-900/30 whitespace-nowrap opacity-0 -translate-y-1 group-hover/account:opacity-100 group-hover/account:translate-y-0 transition-all duration-200 pointer-events-none z-50 flex flex-col items-center">
+              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#1a120c]/90 rotate-45 border-l border-t border-amber-900/30" />
+              <span>{isAuthenticated ? "My Account & Orders" : "Sign In / Account"}</span>
             </div>
-          </Link>
+          </div>
+
+          {/* Cart Icon Button with Tooltip */}
+          <div className="relative group/cart">
+            <Link href="/cart" aria-label={`Cart (${totalItems} items)`} data-no-ripple="true">
+              <div
+                ref={cartIconRef}
+                className="relative p-2.5 rounded-full hover:bg-zinc-100 transition-all duration-200 cursor-pointer flex items-center justify-center text-zinc-800 hover:text-black"
+              >
+                <CartIcon />
+                {totalItems > 0 && (
+                  <span
+                    key={totalItems} // re-mount to retrigger scale animation on count change
+                    className={`
+                      absolute top-1 right-1
+                      min-w-[18px] h-[18px] px-1
+                      flex items-center justify-center
+                      rounded-full
+                      bg-[#312117] text-white
+                      text-[10px] font-bold leading-none
+                      select-none
+                      ${pulse ? "animate-cart-pop" : ""}
+                    `}
+                    style={{
+                      animation: pulse
+                        ? "cartPop 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both"
+                        : undefined,
+                    }}
+                  >
+                    {totalItems > 99 ? "99+" : totalItems}
+                  </span>
+                )}
+              </div>
+            </Link>
+            {/* Tooltip */}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1.5 bg-[#1a120c]/90 backdrop-blur-md text-white text-[11px] font-medium rounded-lg shadow-xl border border-amber-900/30 whitespace-nowrap opacity-0 -translate-y-1 group-hover/cart:opacity-100 group-hover/cart:translate-y-0 transition-all duration-200 pointer-events-none z-50 flex flex-col items-center">
+              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#1a120c]/90 rotate-45 border-l border-t border-amber-900/30" />
+              <span>Shopping Cart {totalItems > 0 ? `(${totalItems})` : "(Empty)"}</span>
+            </div>
+          </div>
         </div>
       </div>
 

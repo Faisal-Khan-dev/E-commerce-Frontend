@@ -404,6 +404,7 @@ export default function ProductDetailPage({ params }: PageProps) {
               <div className="flex items-center border border-zinc-300 rounded-lg w-fit bg-white p-1 shadow-2xs">
                 <button
                   type="button"
+                  data-no-ripple="true"
                   onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
                   className="w-9 h-9 flex items-center justify-center text-zinc-600 hover:text-zinc-900 text-base font-medium rounded-md hover:bg-zinc-100 transition-colors cursor-pointer select-none"
                 >
@@ -414,6 +415,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                 </span>
                 <button
                   type="button"
+                  data-no-ripple="true"
                   onClick={() => setQuantity((prev) => prev + 1)}
                   className="w-9 h-9 flex items-center justify-center text-zinc-600 hover:text-zinc-900 text-base font-medium rounded-md hover:bg-zinc-100 transition-colors cursor-pointer select-none"
                 >
@@ -428,42 +430,48 @@ export default function ProductDetailPage({ params }: PageProps) {
                 ref={addToCartBtnRef}
                 onClick={handleAddToCart}
                 disabled={!product.stock}
+                data-hover-bg="#d4a373"
+                data-hover-text="#312117"
                 className={`
                   w-full py-4 text-xs font-semibold uppercase tracking-widest rounded-lg shadow-md
-                  transition-all duration-200 active:scale-99 cursor-pointer
+                  transition-colors duration-200 cursor-pointer
                   flex items-center justify-center gap-2.5
                   ${
                     addedToCart
                       ? "bg-[#4a6b36] text-white"
                       : product.stock
-                        ? "bg-[#312117] hover:bg-[#432f22] text-white shadow-zinc-800/10"
+                        ? "bg-[#312117] text-white shadow-zinc-800/10"
                         : "bg-zinc-300 text-zinc-500 cursor-not-allowed"
                   }
                 `}
               >
                 <ShoppingBag className="w-4 h-4" />
-                {addedToCart
-                  ? "Added to Cart ✓"
-                  : product.stock
-                    ? "Add to Cart"
-                    : "Out of Stock"}
+                <span>
+                  {addedToCart
+                    ? "Added to Cart ✓"
+                    : product.stock
+                      ? "Add to Cart"
+                      : "Out of Stock"}
+                </span>
               </button>
               <button
                 onClick={handleBuyNow}
                 disabled={!product.stock}
+                data-hover-bg="#312117"
+                data-hover-text="#ffffff"
                 className={`
                   w-full py-4 border border-zinc-300/80 text-xs font-semibold uppercase tracking-widest
-                  rounded-lg transition-all duration-200 cursor-pointer
+                  rounded-lg transition-colors duration-200 cursor-pointer
                   flex items-center justify-center gap-2.5
                   ${
                     product.stock
-                      ? "bg-[#f5efe9]/60 hover:bg-[#f5efe9] text-[#312117]"
+                      ? "bg-[#f5efe9]/60 text-[#312117]"
                       : "bg-zinc-100 text-zinc-400 cursor-not-allowed"
                   }
                 `}
               >
-                <ZapIcon className="w-4 h-4 text-[#312117]" />
-                Buy Now
+                <ZapIcon className="w-4 h-4" />
+                <span>Buy Now</span>
               </button>
             </div>
 

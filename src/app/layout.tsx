@@ -1,9 +1,12 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
-import { inter } from "../fonts"; // Adjusted based on your path configuration
+import { inter } from "../fonts";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
+import WhatsAppButton from "@/components/common/WhatsAppButton";
+import GlobalButtonHover from "@/components/common/GlobalButtonHover";
+import CursorTracker from "@/components/common/CursorTracker";
 
 export const metadata: Metadata = {
   title: "Ecommerce Dry Fruits",
@@ -26,7 +29,12 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <AuthProvider>
-        <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            {children}
+            <WhatsAppButton />
+            <GlobalButtonHover />
+            <CursorTracker />
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

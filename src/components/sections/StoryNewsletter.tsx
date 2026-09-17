@@ -71,13 +71,17 @@ export function StoryNewsletter() {
             <button
               type="submit"
               disabled={status === "loading" || status === "success"}
-              className="bg-white hover:bg-zinc-100 text-[#312117] text-xs font-semibold tracking-widest uppercase px-6 py-4 rounded-md transition-all duration-200 shrink-0 disabled:opacity-70"
+              data-hover-bg="#2b1d16"
+              data-hover-text="#ffffff"
+              className="bg-white text-[#312117] text-xs font-semibold tracking-widest uppercase px-6 py-4 rounded-md transition-all duration-200 shrink-0 disabled:opacity-70 cursor-pointer"
             >
-              {status === "loading"
-                ? "Subscribing..."
-                : status === "success"
-                  ? "Subscribed"
-                  : "Subscribe"}
+              <span>
+                {status === "loading"
+                  ? "Subscribing..."
+                  : status === "success"
+                    ? "Subscribed"
+                    : "Subscribe"}
+              </span>
             </button>
           </form>
 

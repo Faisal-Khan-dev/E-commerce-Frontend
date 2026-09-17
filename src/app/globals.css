@@ -29,3 +29,153 @@ body {
 .playfair-display {
   font-family: var(--font-playfair-display), serif;
 }
+
+/* ==========================================
+   WHATSAPP FLOATING WIDGET ANIMATIONS
+   ========================================== */
+@keyframes waBouncePulse {
+
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 10px 25px -5px rgba(37, 211, 102, 0.45), 0 8px 10px -6px rgba(37, 211, 102, 0.3);
+  }
+
+  50% {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 20px 30px -5px rgba(37, 211, 102, 0.55), 0 12px 15px -6px rgba(37, 211, 102, 0.4);
+  }
+}
+
+@keyframes waRingRipple {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
+
+/* ==========================================
+   GLOBAL CURSOR ENTRY RADIAL BUTTON HOVER (2.0s Very Slow Liquid Expansion)
+   ========================================== */
+
+/* Universal button & CTA base styling */
+button,
+.btn,
+a.btn,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+a[class*="py-"],
+a[class*="px-"],
+[data-ripple="true"] {
+  position: relative !important;
+  overflow: hidden !important;
+  z-index: 1;
+  transition: color 2s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ensure child text, spans, headings, icons, SVG paths, and badges sit strictly on top at z-index 10 */
+button>*,
+.btn>*,
+a.btn>*,
+[role="button"]>*,
+input[type="submit"]>*,
+input[type="button"]>*,
+a[class*="py-"]>*,
+a[class*="px-"]>*,
+[data-ripple="true"]>* {
+  position: relative !important;
+  z-index: 10 !important;
+  transition: color 2s cubic-bezier(0.16, 1, 0.3, 1),
+    fill 2s cubic-bezier(0.16, 1, 0.3, 1),
+    stroke 2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Radial fill pseudo-element starting as a tiny 0px circle at mouse entry point (var(--btn-mouse-x), var(--btn-mouse-y)) */
+button::before,
+.btn::before,
+a.btn::before,
+[role="button"]::before,
+input[type="submit"]::before,
+input[type="button"]::before,
+a[class*="py-"]::before,
+a[class*="px-"]::before,
+[data-ripple="true"]::before {
+  content: "";
+  position: absolute;
+  top: var(--btn-mouse-y, 50%);
+  left: var(--btn-mouse-x, 50%);
+  width: 0px;
+  height: 0px;
+  border-radius: 50%;
+  background-color: var(--btn-hover-bg, #312117);
+  transform: translate(-50%, -50%);
+  transition: width 2s cubic-bezier(0.16, 1, 0.3, 1),
+    height 2s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+}
+
+/* Hover expansion state: Tiny 0px circle expands very slowly over 2s to 500px covering the entire button */
+button:not(:disabled):not([data-no-ripple="true"]):hover::before,
+.btn:not([data-no-ripple="true"]):hover::before,
+a.btn:not([data-no-ripple="true"]):hover::before,
+[role="button"]:not([data-no-ripple="true"]):hover::before,
+input[type="submit"]:not(:disabled):not([data-no-ripple="true"]):hover::before,
+input[type="button"]:not(:disabled):not([data-no-ripple="true"]):hover::before,
+a[class*="py-"]:not([data-no-ripple="true"]):hover::before,
+a[class*="px-"]:not([data-no-ripple="true"]):hover::before,
+[data-ripple="true"]:not([data-no-ripple="true"]):hover::before {
+  width: var(--btn-ripple-size, 500px);
+  height: var(--btn-ripple-size, 500px);
+  opacity: 1;
+}
+
+/* High-contrast text color transition on hover over 2s */
+button:not(:disabled):not([data-no-ripple="true"]):hover,
+button:not(:disabled):not([data-no-ripple="true"]):hover *,
+.btn:not([data-no-ripple="true"]):hover,
+.btn:not([data-no-ripple="true"]):hover *,
+a.btn:not([data-no-ripple="true"]):hover,
+a.btn:not([data-no-ripple="true"]):hover *,
+[role="button"]:not([data-no-ripple="true"]):hover,
+[role="button"]:not([data-no-ripple="true"]):hover *,
+input[type="submit"]:not(:disabled):not([data-no-ripple="true"]):hover,
+input[type="button"]:not(:disabled):not([data-no-ripple="true"]):hover,
+a[class*="py-"]:not([data-no-ripple="true"]):hover,
+a[class*="py-"]:not([data-no-ripple="true"]):hover *,
+a[class*="px-"]:not([data-no-ripple="true"]):hover,
+a[class*="px-"]:not([data-no-ripple="true"]):hover *,
+[data-ripple="true"]:not([data-no-ripple="true"]):hover,
+[data-ripple="true"]:not([data-no-ripple="true"]):hover * {
+  color: var(--btn-hover-text, inherit) !important;
+}
+
+/* SVG icons and path strokes inside buttons inherit contrast text color smoothly over 2s */
+button:not(:disabled):not([data-no-ripple="true"]):hover svg,
+button:not(:disabled):not([data-no-ripple="true"]):hover svg *,
+.btn:not([data-no-ripple="true"]):hover svg,
+.btn:not([data-no-ripple="true"]):hover svg *,
+a.btn:not([data-no-ripple="true"]):hover svg,
+a.btn:not([data-no-ripple="true"]):hover svg *,
+[role="button"]:not([data-no-ripple="true"]):hover svg,
+[role="button"]:not([data-no-ripple="true"]):hover svg *,
+a[class*="py-"]:not([data-no-ripple="true"]):hover svg,
+a[class*="py-"]:not([data-no-ripple="true"]):hover svg *,
+a[class*="px-"]:not([data-no-ripple="true"]):hover svg,
+a[class*="px-"]:not([data-no-ripple="true"]):hover svg *,
+[data-ripple="true"]:not([data-no-ripple="true"]):hover svg,
+[data-ripple="true"]:not([data-no-ripple="true"]):hover svg * {
+  color: var(--btn-hover-text, inherit) !important;
+  stroke: var(--btn-hover-text, currentColor) !important;
+  fill: var(--btn-hover-text, currentColor);
+}

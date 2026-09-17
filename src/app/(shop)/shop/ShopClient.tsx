@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import ShopSidebar from "@/components/sidebars/ShopSidebar";
 import ProductGridCard, { ShopProduct } from "@/components/cards/ProductCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -105,10 +105,12 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 flex flex-col md:flex-row gap-8">
         {/* Left Side Filter Toolbar */}
         <aside className="w-full md:w-64 shrink-0">
-          <ShopSidebar
-            selectedCategories={selectedCategories}
-            onCategoryChange={handleCategoryChange}
-          />
+          <Suspense fallback={<div className="text-xs text-zinc-400">Loading filters...</div>}>
+            <ShopSidebar
+              selectedCategories={selectedCategories}
+              onCategoryChange={handleCategoryChange}
+            />
+          </Suspense>
         </aside>
 
         {/* Right Side Control Bar & Grid Panel */}

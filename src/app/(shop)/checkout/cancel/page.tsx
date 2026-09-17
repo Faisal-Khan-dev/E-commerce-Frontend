@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { AlertCircle, Loader2, RotateCcw, ShoppingBag } from "lucide-react";
@@ -13,7 +13,7 @@ interface StoredCheckout {
   orderId?: string;
 }
 
-export default function CheckoutCancelPage() {
+function CheckoutCancelContent() {
   const searchParams = useSearchParams();
   const [orderData, setOrderData] = useState<CheckoutOrderDetails | null>(null);
   const [loadingOrder, setLoadingOrder] = useState(false);
@@ -110,5 +110,13 @@ export default function CheckoutCancelPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CheckoutCancelPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[85vh] flex items-center justify-center text-xs text-zinc-400">Loading...</div>}>
+      <CheckoutCancelContent />
+    </Suspense>
   );
 }

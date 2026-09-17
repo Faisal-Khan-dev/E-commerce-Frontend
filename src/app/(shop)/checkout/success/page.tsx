@@ -1,7 +1,7 @@
 // app/(shop)/checkout/success/page.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -30,7 +30,7 @@ const getErrorMessage = (error: unknown) => {
   return undefined;
 };
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
   const searchParams = useSearchParams();
   const [orderData, setOrderData] = useState<CheckoutOrderDetails | null>(null);
   const [loadingOrder, setLoadingOrder] = useState(false);
@@ -160,14 +160,13 @@ export default function OrderSuccessPage() {
         {/* Centered Creative Ambient Product Banner Component */}
         <div className="relative aspect-[21/9] w-full rounded-xl overflow-hidden border border-zinc-200/40 shadow-sm group">
           <Image
-            src="/order-card-pic.png" // Sourcing reference image mapping location paths
+            src="/order-card-pic.png"
             alt="Artisanal loose-leaf wellness blends alongside measuring spoons on warm neutral surface textures"
             fill
             priority
             sizes="(max-width: 768px) 100vw, 600px"
             className="object-cover transition-transform duration-700 group-hover:scale-102 filter brightness-[0.70] contrast-[0.95]"
           />
-          {/* Internal Minimal Typography Branding Overlay Label */}
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-white text-[10px] font-bold tracking-[0.35em] uppercase text-center opacity-90 scale-95 sm:scale-100 select-none">
               Purity in Every Ritual
@@ -193,11 +192,18 @@ export default function OrderSuccessPage() {
           </Link>
         </div>
 
-        {/* Dynamic Dispatch Notice Footnote banner elements */}
         <p className="text-[11px] font-light text-zinc-400 pt-2 border-t border-dashed border-zinc-200">
           A confirmation email has been sent to your registered address.
         </p>
       </div>
     </div>
+  );
+}
+
+export default function OrderSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[85vh] flex items-center justify-center text-xs text-zinc-400">Loading...</div>}>
+      <OrderSuccessContent />
+    </Suspense>
   );
 }

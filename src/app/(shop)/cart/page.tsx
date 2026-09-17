@@ -97,9 +97,11 @@ export default function CartPage() {
                       {/* Quantity Action Controls */}
                       <div className="flex items-center border border-zinc-200 rounded bg-[#fcf9f6] w-fit shadow-2xs mt-4">
                         <button
+                          type="button"
+                          data-no-ripple="true"
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
                           aria-label={`Decrease quantity for ${item.name}`}
-                          className="px-2.5 py-1 text-zinc-400 hover:text-zinc-900 transition-colors"
+                          className="px-2.5 py-1 text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
@@ -107,9 +109,11 @@ export default function CartPage() {
                           {item.quantity}
                         </span>
                         <button
+                          type="button"
+                          data-no-ripple="true"
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
                           aria-label={`Increase quantity for ${item.name}`}
-                          className="px-2.5 py-1 text-zinc-400 hover:text-zinc-900 transition-colors"
+                          className="px-2.5 py-1 text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
@@ -131,9 +135,11 @@ export default function CartPage() {
 
                   {/* Absolute Top-Right Positioned Line Item Clear Trigger Button */}
                   <button
+                    type="button"
+                    data-no-ripple="true"
                     onClick={() => removeItem(item.id)}
                     aria-label={`Remove ${item.name} item from selections basket`}
-                    className="absolute top-4 right-4 p-1 text-zinc-300 hover:text-zinc-600 transition-colors rounded-full hover:bg-zinc-50"
+                    className="absolute top-4 right-4 p-1 text-zinc-300 hover:text-zinc-600 transition-colors rounded-full hover:bg-zinc-50 cursor-pointer"
                   >
                     <X className="w-4 h-4 stroke-[1.5]" />
                   </button>
@@ -184,9 +190,11 @@ export default function CartPage() {
               {/* Final Transaction Trigger Execution CTA Button */}
               <Link
                 href="/checkout"
-                className="block w-full py-4 bg-[#312117] hover:bg-[#432f22] text-white text-xs font-semibold uppercase tracking-widest rounded-md shadow-md transition-all duration-200 active:scale-99 mb-4 text-center"
+                data-hover-bg="#d4a373"
+                data-hover-text="#312117"
+                className="block w-full py-4 bg-[#312117] text-white text-xs font-semibold uppercase tracking-widest rounded-md shadow-md transition-colors duration-200 mb-4 text-center cursor-pointer"
               >
-                Proceed to Checkout
+                <span>Proceed to Checkout</span>
               </Link>
 
               {/* Secure Trust Footnote element banner */}
