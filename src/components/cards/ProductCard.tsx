@@ -3,7 +3,7 @@
 // components/cards/ProductCard.tsx
 import Image from "next/image";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { Star, ShoppingBag } from "lucide-react";
 import { useRef, useState, useCallback } from "react";
 import { useCart } from "@/context/CartContext";
 import FlyToCart from "@/components/common/FlyToCart";
@@ -114,9 +114,9 @@ export default function ProductGridCard({
               ref={buttonRef}
               onClick={handleAddToCart}
               aria-label={`Add ${name} to your shopping basket`}
-              className="p-2.5 bg-[#312117] text-white rounded-md hover:bg-[#473224] active:scale-95 transition-all duration-200 shadow-sm"
+              className="p-2.5 bg-[#312117] text-white rounded-md hover:bg-[#473224] active:scale-95 transition-all duration-200 shadow-sm cursor-pointer flex items-center justify-center"
             >
-              <Image src="/cart-icon.png" width={14} height={14} alt="Add to Cart" />
+              <ShoppingBag className="w-4 h-4 stroke-current" />
             </button>
           </div>
         </div>

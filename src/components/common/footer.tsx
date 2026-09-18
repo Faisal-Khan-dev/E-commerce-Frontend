@@ -2,14 +2,15 @@ import Link from "next/link";
 
 const exploreLinks = [
   { label: "Sourcing", href: "/sourcing" },
-  { label: "Our Story", href: "/about" },
+  { label: "Our Story", href: "/about-us" },
   { label: "Wholesale", href: "/wholesale" },
 ];
 
 const supportLinks = [
-  { label: "Privacy", href: "/privacy" },
-  { label: "Terms", href: "/terms" },
-  { label: "Shipping", href: "/shipping" },
+  { label: "Terms & Policy", href: "/terms-and-policies" },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
+  { label: "Shipping & Delivery", href: "/shipping" },
 ];
 
 function InstagramIcon() {

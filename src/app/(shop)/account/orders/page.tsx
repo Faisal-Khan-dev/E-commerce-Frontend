@@ -2,21 +2,11 @@
 
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { OrderCard } from "@/components/cards/OrderCard";
+import { OrderCard, PastOrder } from "@/components/cards/OrderCard";
 import { useAuth } from "@/context/AuthContext";
 import axiosInstance from "@/lib/axios";
 import OrderDetailsModal from "@/components/modals/OrderDetailsModal";
 import { Loader2, AlertCircle, ShoppingBag, ChevronLeft, ChevronRight } from "lucide-react";
-
-export interface PastOrder {
-  id: string;
-  name: string;
-  price: number;
-  dateOrdered: string;
-  status: string;
-  imageSrc: string;
-  slug?: string;
-}
 
 function CustomerOrdersContent() {
   const router = useRouter();
@@ -72,30 +62,29 @@ function CustomerOrdersContent() {
       });
 
       if (response.data && response.data.success) {
-        const parsedOrders: PastOrder[] = [];
+        const parsedOrders: PastOrder[] = response.data.orders.map((rawOrder: any) => {
+          const firstItem = rawOrder.orderItems?.[0];
+          const itemCount = rawOrder.orderItems?.length || 0;
+          const itemName = firstItem?.name || "Organic Order";
+          const displayName = itemCount > 1 ? `${itemName} (+${itemCount - 1} more)` : itemName;
+          const itemImage = firstItem?.productId?.images?.[0] || firstItem?.image || "/order-card-pic.png";
+          const itemSlug = firstItem?.productId?.slug || firstItem?.slug || "";
 
-        response.data.orders.forEach((rawOrder: any) => {
-          if (rawOrder.orderItems && rawOrder.orderItems.length > 0) {
-            rawOrder.orderItems.forEach((item: any) => {
-              const itemProductSlug = item.productId?.slug || item.slug || "";
-
-              parsedOrders.push({
-                id: rawOrder._id,
-                name: item.name || "Organic Product Specimen",
-                price: item.price || 0,
-                status: rawOrder.status || "processing",
-                dateOrdered: rawOrder.createdAt
-                  ? new Date(rawOrder.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })
-                  : "Recent Order",
-                imageSrc: item.productId?.images?.[0] || "/order-card-pic.png",
-                slug: itemProductSlug,
-              });
-            });
-          }
+          return {
+            id: rawOrder._id,
+            name: displayName,
+            price: rawOrder.totalAmount || firstItem?.price || 0,
+            status: rawOrder.status || "processing",
+            dateOrdered: rawOrder.createdAt
+              ? new Date(rawOrder.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })
+              : "Recent Order",
+            imageSrc: itemImage,
+            slug: itemSlug,
+          };
         });
 
         setOrders(parsedOrders);
@@ -103,13 +92,12 @@ function CustomerOrdersContent() {
           setPagination(response.data.pagination);
         }
       } else {
-        setError("Could not trace client orders records mapping payload templates.");
+        setError("Could not load client orders.");
       }
     } catch (err: any) {
-      console.error("Error matching transaction indexes:", err);
+      console.error("Error fetching orders:", err);
       setError(
-        err?.response?.data?.message ||
-        "Failed to establish communication connections."
+        err?.response?.data?.message || "Failed to establish communication connections."
       );
     } finally {
       setLoading(false);
@@ -134,21 +122,18 @@ function CustomerOrdersContent() {
       if (response.data && response.data.success) {
         setSelectedOrderData(response.data.order);
       } else {
-        setModalError("Unable to open matching order parameters sheet layout.");
+        setModalError("Unable to load order details.");
       }
     } catch (err: any) {
-      console.error("Error indexing targeted single transaction mapping row:", err);
-      setModalError(
-        err?.response?.data?.message || "Internal transmission system fault."
-      );
+      console.error("Error fetching order details:", err);
+      setModalError(err?.response?.data?.message || "Internal server error.");
     } finally {
       setModalLoading(false);
     }
   };
 
   const handleBuyAgainRouting = (orderItem: PastOrder) => {
-    const activeRouteSlug =
-      orderItem.slug || orderItem.name.toLowerCase().replace(/ /g, "-");
+    const activeRouteSlug = orderItem.slug || orderItem.name.toLowerCase().replace(/ /g, "-");
     router.push(`/shop/${activeRouteSlug}`);
   };
 
@@ -156,9 +141,7 @@ function CustomerOrdersContent() {
     if (selectedOrderId) {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.id === selectedOrderId
-            ? { ...order, status: "cancelled" }
-            : order
+          order.id === selectedOrderId ? { ...order, status: "cancelled" } : order
         )
       );
     }
@@ -187,7 +170,9 @@ function CustomerOrdersContent() {
           <p className="text-xs text-zinc-400 font-light mb-6">{error}</p>
           <button
             onClick={fetchCustomerOrders}
-            className="px-5 py-2.5 bg-[#312117] hover:bg-[#432f22] text-white text-xs font-semibold uppercase tracking-widest rounded-md cursor-pointer transition-colors"
+            data-hover-bg="#d4a373"
+            data-hover-text="#312117"
+            className="px-5 py-2.5 bg-[#312117] text-white text-xs font-semibold uppercase tracking-widest rounded-md cursor-pointer transition-colors"
           >
             Retry Connection Request
           </button>
@@ -224,7 +209,9 @@ function CustomerOrdersContent() {
           </p>
           <button
             onClick={() => router.push("/shop")}
-            className="px-6 py-3 bg-[#312117] hover:bg-[#432f22] text-white text-xs font-semibold uppercase tracking-widest rounded-md shadow-md transition-all duration-200 hover:shadow-lg active:scale-98 cursor-pointer flex items-center gap-2"
+            data-hover-bg="#d4a373"
+            data-hover-text="#312117"
+            className="px-6 py-3 bg-[#312117] text-white text-xs font-semibold uppercase tracking-widest rounded-md shadow-md transition-all duration-200 hover:shadow-lg active:scale-98 cursor-pointer flex items-center gap-2"
           >
             Start Shopping
           </button>
@@ -252,7 +239,7 @@ function CustomerOrdersContent() {
                 type="button"
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="p-2 border border-zinc-300 rounded-full text-zinc-600 hover:bg-zinc-900 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="p-2 border border-zinc-300 rounded-full text-zinc-600 hover:text-[#312117] hover:border-[#312117] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -267,7 +254,7 @@ function CustomerOrdersContent() {
                     className={`w-9 h-9 flex items-center justify-center rounded-full text-xs font-medium transition-colors cursor-pointer ${
                       currentPage === page
                         ? "bg-[#312117] text-white font-semibold shadow-xs"
-                        : "text-zinc-600 hover:bg-zinc-200/50"
+                        : "text-zinc-600 hover:text-[#312117]"
                     }`}
                   >
                     {page}
@@ -279,7 +266,7 @@ function CustomerOrdersContent() {
                 type="button"
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pagination.pages))}
                 disabled={currentPage === pagination.pages}
-                className="p-2 border border-zinc-300 rounded-full text-zinc-600 hover:bg-zinc-900 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="p-2 border border-zinc-300 rounded-full text-zinc-600 hover:text-[#312117] hover:border-[#312117] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>

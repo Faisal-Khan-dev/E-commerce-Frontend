@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import ShopSidebar from "@/components/sidebars/ShopSidebar";
 import ProductGridCard, { ShopProduct } from "@/components/cards/ProductCard";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X, ChevronDown, SlidersHorizontal } from "lucide-react";
 import { productService, Product } from "@/services/productService";
 
 interface ShopClientProps {
@@ -30,7 +30,7 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
     setSelectedCategories(categories);
     setCurrentPage(1);
   }, []);
-  
+
   const isFirstRender = useRef(true);
 
   useEffect(() => {
@@ -116,38 +116,61 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
         {/* Right Side Control Bar & Grid Panel */}
         <main className="flex-grow">
           {/* Top Control Bar row */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6">
-            {/* Results Count - Left Side */}
-            <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider whitespace-nowrap">
-              {loading ? "Loading..." : `Showing ${products.length} of ${pagination.total}`}
-            </span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-stone-200/60">
+            {/* Results Count & Filter Indicator - Left Side */}
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-stone-100 text-[11px] font-semibold text-[#312117] tracking-wider uppercase">
+                <SlidersHorizontal className="w-3.5 h-3.5 text-[#312117]" />
+                {loading ? "Loading..." : `Showing ${products.length} of ${pagination.total} Products`}
+              </span>
+            </div>
 
             {/* Sort Dropdown & Search Input - Right Side */}
-            <div className="flex items-center gap-3 ml-auto">
-              {/* Search Input */}
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  setCurrentPage(1); // Reset to first page when searching
-                }}
-                className="w-108 px-4 py-2.5 bg-[#f5efe9] text-xs font-medium text-zinc-700 placeholder-zinc-400 border border-zinc-300/30 rounded outline-none focus:border-zinc-400 transition-colors"
-              />
-              <select
-                value={sortBy}
-                onChange={(e) => {
-                  setSortBy(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="bg-[#f5efe9] text-xs font-medium text-zinc-700 px-4 py-2.5 rounded border border-zinc-300/30 outline-none focus:border-zinc-400 cursor-pointer transition-colors"
-              >
-                <option value="newest">Sort by: Featured</option>
-                <option value="low-to-high">Price: Low to High</option>
-                <option value="high-to-low">Price: High to Low</option>
-                <option value="top-rated">Highest Rated</option>
-              </select>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+              {/* Search Input Container */}
+              <div className="relative w-full sm:w-80 md:w-96 lg:w-[28rem]">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchTerm}
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                    setCurrentPage(1); // Reset to first page when searching
+                  }}
+                  className="w-full pl-10 pr-9 py-2.5 bg-stone-50 hover:bg-white text-xs font-medium text-stone-800 placeholder-stone-400 border border-stone-200/90 rounded-xl outline-none focus:outline-none focus:bg-white focus:border-stone-300 focus:ring-0 transition-all shadow-xs"
+                />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchTerm("");
+                      setCurrentPage(1);
+                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-200/60 transition-colors"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+
+              {/* Sort Dropdown Container */}
+              <div className="relative w-full sm:w-auto shrink-0">
+                <select
+                  value={sortBy}
+                  onChange={(e) => {
+                    setSortBy(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="w-full appearance-none pl-4 pr-10 py-2.5 bg-stone-50 hover:bg-white text-xs font-semibold text-stone-800 border border-stone-200/90 rounded-xl outline-none focus:outline-none focus:bg-white focus:border-stone-300 focus:ring-0 cursor-pointer transition-all shadow-xs"
+                >
+                  <option value="newest">Newest</option>
+                  <option value="low-to-high">Price: Low to High</option>
+                  <option value="high-to-low">Price: High to Low</option>
+                  <option value="top-rated">Highest Rated</option>
+                </select>
+                <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500 pointer-events-none" />
+              </div>
             </div>
           </div>
 
@@ -188,7 +211,7 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
                       setCurrentPage((prev) => Math.max(prev - 1, 1))
                     }
                     disabled={currentPage === 1}
-                    className="p-2 border border-zinc-300 rounded-full text-zinc-600 hover:bg-zinc-900 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="p-2 border border-zinc-300 rounded-full text-zinc-600 hover:text-[#312117] hover:border-[#312117] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
@@ -204,11 +227,10 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`w-9 h-9 flex items-center justify-center rounded-full text-xs font-medium transition-colors ${
-                            currentPage === page
-                              ? "bg-zinc-900 text-white font-semibold"
-                              : "text-zinc-600 hover:bg-zinc-200/50"
-                          }`}
+                          className={`w-9 h-9 flex items-center justify-center rounded-full text-xs font-medium transition-colors cursor-pointer ${currentPage === page
+                            ? "bg-[#312117] text-white font-semibold shadow-xs"
+                            : "text-zinc-600 hover:text-[#312117]"
+                            }`}
                         >
                           {page}
                         </button>
@@ -234,7 +256,7 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
                       )
                     }
                     disabled={currentPage === pagination.pages}
-                    className="p-2 border border-zinc-300 rounded-full text-zinc-600 hover:bg-zinc-900 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="p-2 border border-zinc-300 rounded-full text-zinc-600 hover:text-[#312117] hover:border-[#312117] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>

@@ -177,5 +177,10 @@ a[class*="px-"]:not([data-no-ripple="true"]):hover svg *,
 [data-ripple="true"]:not([data-no-ripple="true"]):hover svg * {
   color: var(--btn-hover-text, inherit) !important;
   stroke: var(--btn-hover-text, currentColor) !important;
-  fill: var(--btn-hover-text, currentColor);
+}
+
+/* Preserve outline SVG icons transparent fill on hover */
+svg[fill="none"],
+svg[fill="none"] * {
+  fill: none !important;
 }

@@ -54,11 +54,12 @@ function AccountSidebarContent() {
             <Link
               key={item.href}
               href={item.href}
-              className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-200 ${
-                isActive
+              data-hover-bg="#D3A172"
+              data-hover-text="#312117"
+              className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-200 ${isActive
                   ? "bg-[#312117] text-white border border-[#312117] shadow-md ring-2 ring-[#312117]/10"
-                  : "bg-white text-stone-700 hover:text-stone-900 border border-stone-200/90 shadow-xs hover:shadow-sm hover:border-stone-300"
-              }`}
+                  : "bg-white text-[#312117] hover:text-[#312117] border border-stone-200/90 shadow-xs hover:shadow-sm hover:border-[#D3A172]"
+                }`}
             >
               <div className="flex items-center gap-3">
                 <Icon className={`w-4 h-4 ${isActive ? "text-amber-300" : "text-stone-400"}`} />

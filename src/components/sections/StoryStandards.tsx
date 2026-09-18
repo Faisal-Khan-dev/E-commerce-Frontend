@@ -45,7 +45,7 @@ export function StoryStandards() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-16">
         <div className="space-y-2">
           <h2 className="text-2xl sm:text-3xl font-serif tracking-tight text-zinc-900">
-            The Aureum Standard
+            The Healthy Basket Standard
           </h2>
           <p className="text-zinc-400 text-xs sm:text-sm font-light tracking-wide">
             A meticulous journey from the wild to your home.

@@ -8,6 +8,7 @@ export interface PastOrder {
   dateOrdered: string;
   status: string;
   imageSrc: string;
+  slug?: string;
 }
 
 interface OrderCardProps {
@@ -58,13 +59,17 @@ export function OrderCard({
         <div className="grid grid-cols-2 gap-3 pt-1">
           <button
             onClick={() => onViewDetails?.(order.id)}
-            className="py-2 rounded-md bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-700 text-[10px] font-semibold uppercase tracking-wider transition-colors"
+            data-hover-bg="#D3A172"
+            data-hover-text="#312117"
+            className="py-2.5 rounded-md bg-white border border-stone-300 text-[#312117] hover:text-[#312117] text-[10px] font-semibold uppercase tracking-wider transition-colors cursor-pointer shadow-2xs"
           >
             Order Details
           </button>
           <button
             onClick={() => onBuyAgain?.(order.id)}
-            className="py-2 rounded-md bg-[#536252] hover:bg-[#434f42] text-white text-[10px] font-semibold uppercase tracking-wider transition-colors"
+            data-hover-bg="#D3A172"
+            data-hover-text="#312117"
+            className="py-2.5 rounded-md bg-[#312117] text-white hover:text-[#312117] text-[10px] font-semibold uppercase tracking-wider transition-colors cursor-pointer shadow-2xs"
           >
             Buy Again
           </button>

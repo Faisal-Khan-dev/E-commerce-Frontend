@@ -12,6 +12,7 @@ const navigationItems = [
   { label: "Product", href: "/shop" },
   { label: "About Us", href: "/about-us" },
   { label: "Contact Us", href: "/contact-us" },
+  { label: "Terms & Policy", href: "/terms-and-policies" },
 ];
 
 function UserIcon() {

@@ -406,7 +406,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                   type="button"
                   data-no-ripple="true"
                   onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
-                  className="w-9 h-9 flex items-center justify-center text-zinc-600 hover:text-zinc-900 text-base font-medium rounded-md hover:bg-zinc-100 transition-colors cursor-pointer select-none"
+                  className="w-9 h-9 flex items-center justify-center text-zinc-600 hover:text-zinc-950 text-base font-medium rounded-md transition-colors cursor-pointer select-none"
                 >
                   -
                 </button>
@@ -417,7 +417,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                   type="button"
                   data-no-ripple="true"
                   onClick={() => setQuantity((prev) => prev + 1)}
-                  className="w-9 h-9 flex items-center justify-center text-zinc-600 hover:text-zinc-900 text-base font-medium rounded-md hover:bg-zinc-100 transition-colors cursor-pointer select-none"
+                  className="w-9 h-9 flex items-center justify-center text-zinc-600 hover:text-zinc-950 text-base font-medium rounded-md transition-colors cursor-pointer select-none"
                 >
                   +
                 </button>
@@ -437,11 +437,9 @@ export default function ProductDetailPage({ params }: PageProps) {
                   transition-colors duration-200 cursor-pointer
                   flex items-center justify-center gap-2.5
                   ${
-                    addedToCart
-                      ? "bg-[#4a6b36] text-white"
-                      : product.stock
-                        ? "bg-[#312117] text-white shadow-zinc-800/10"
-                        : "bg-zinc-300 text-zinc-500 cursor-not-allowed"
+                    product.stock
+                      ? "bg-[#312117] text-white shadow-zinc-800/10"
+                      : "bg-zinc-300 text-zinc-500 cursor-not-allowed"
                   }
                 `}
               >

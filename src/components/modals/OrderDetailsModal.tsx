@@ -116,60 +116,67 @@ export default function OrderDetailsModal({
       {/* Modal interface shell window */}
       <div
         ref={modalRef}
-        className="relative bg-[#fcf9f6] w-full max-w-xl rounded-xl border border-zinc-200/60 p-6 sm:p-8 shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200 max-h-[85vh] overflow-y-auto scrollbar-none"
+        className="relative bg-[#fcf9f6] w-full max-w-xl rounded-xl border border-zinc-200/60 shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200 max-h-[85vh] flex flex-col overflow-hidden"
       >
-        <button
-          onClick={onClose}
-          className="absolute top-5 right-5 text-zinc-400 hover:text-zinc-600 transition-colors cursor-pointer"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        {/* Fixed Top Bar with Close Cross Button on Top Right */}
+        <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-stone-200/50 bg-[#fcf9f6] shrink-0">
+          <span
+            className={`text-[10px] font-bold tracking-[0.15em] px-2.5 py-0.5 rounded-full uppercase ${
+              currentStatus === "cancelled"
+                ? "text-red-700 bg-red-100"
+                : "text-[#4a6b36] bg-[#e2f0d9]"
+            }`}
+          >
+            {statusState || orderData?.status || "Processing"}
+          </span>
+          <button
+            type="button"
+            onClick={onClose}
+            data-no-ripple="true"
+            aria-label="Close modal"
+            className="p-1.5 rounded-full text-stone-400 hover:text-[#312117] hover:bg-stone-200/80 transition-all cursor-pointer flex items-center justify-center shrink-0"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-12 space-y-3">
-            <Loader2 className="w-8 h-8 animate-spin text-zinc-600" />
-            <p className="text-xs text-zinc-400 uppercase tracking-widest font-medium">
-              Synchronizing Transaction Data...
-            </p>
-          </div>
-        ) : error ? (
-          <div className="py-6 text-center">
-            <div className="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-3 font-bold">
-              !
-            </div>
-            <p className="text-sm text-zinc-800 font-medium">{error}</p>
-            <button
-              onClick={onClose}
-              className="mt-4 px-4 py-2 bg-zinc-900 text-white text-xs font-semibold uppercase tracking-wider rounded-md"
-            >
-              Dismiss
-            </button>
-          </div>
-        ) : !orderData ? (
-          <p className="text-sm text-zinc-500 text-center py-6">
-            No order details accessible.
-          </p>
-        ) : (
-          <div className="space-y-6">
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <span
-                  className={`text-[10px] font-bold tracking-[0.15em] px-2.5 py-0.5 rounded-full uppercase ${currentStatus === "cancelled"
-                      ? "text-red-700 bg-red-100"
-                      : "text-[#4a6b36] bg-[#e2f0d9]"
-                    }`}
-                >
-                  {statusState || orderData.status || "Processing"}
-                </span>
-              </div>
-              <h3 className="font-serif text-xl sm:text-2xl text-zinc-900">
-                Order {orderData.orderNo || `#${orderData._id?.slice(-6)}`}
-              </h3>
-              <p className="text-[11px] text-zinc-400 font-light flex items-center gap-1.5 mt-1">
-                <Calendar className="w-3 h-3" /> System ID Reference:{" "}
-                {orderData._id}
+        {/* Scrollable Content Body */}
+        <div className="p-6 sm:p-8 overflow-y-auto scrollbar-none flex-1">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-12 space-y-3">
+              <Loader2 className="w-8 h-8 animate-spin text-zinc-600" />
+              <p className="text-xs text-zinc-400 uppercase tracking-widest font-medium">
+                Synchronizing Transaction Data...
               </p>
             </div>
+          ) : error ? (
+            <div className="py-6 text-center">
+              <div className="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-3 font-bold">
+                !
+              </div>
+              <p className="text-sm text-zinc-800 font-medium">{error}</p>
+              <button
+                onClick={onClose}
+                className="mt-4 px-4 py-2 bg-zinc-900 text-white text-xs font-semibold uppercase tracking-wider rounded-md"
+              >
+                Dismiss
+              </button>
+            </div>
+          ) : !orderData ? (
+            <p className="text-sm text-zinc-500 text-center py-6">
+              No order details accessible.
+            </p>
+          ) : (
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-serif text-xl sm:text-2xl text-zinc-900">
+                  Order {orderData.orderNo || `#${orderData._id?.slice(-6)}`}
+                </h3>
+                <p className="text-[11px] text-zinc-400 font-light flex items-center gap-1.5 mt-1">
+                  <Calendar className="w-3 h-3" /> System ID Reference:{" "}
+                  {orderData._id}
+                </p>
+              </div>
 
             {cancelSuccess && (
               <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-800 flex items-center gap-2">
@@ -331,6 +338,7 @@ export default function OrderDetailsModal({
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

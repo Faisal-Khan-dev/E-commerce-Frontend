@@ -12,7 +12,7 @@ export function StorySourcing() {
           </h2>
           <div className="space-y-4 text-zinc-600 font-light text-sm sm:text-base leading-relaxed text-pretty">
             <p>
-              At Aureum Apothecary, we believe that true wellness is a dialogue
+              At Healthy Basket, we believe that true wellness is a dialogue
               between the earth and the body. Our journey began in the remote,
               high-altitude regions where nature remains untamed by modern
               haste.
@@ -25,8 +25,12 @@ export function StorySourcing() {
             </p>
           </div>
           <div className="pt-2">
-            <button className="text-[11px] font-bold tracking-widest uppercase border border-zinc-900 px-6 py-3.5 rounded-sm bg-transparent hover:bg-zinc-900 hover:text-white transition-all duration-300">
-              Our Sourcing Ethics
+            <button
+              data-ripple="true"
+              data-hover-text="#000000"
+              className="btn px-8 py-3.5 bg-[#402e22] text-center text-zinc-100 text-sm font-semibold tracking-wide rounded-md shadow-lg cursor-pointer inline-flex items-center justify-center"
+            >
+              <span>OUR SOURCING ETHICS</span>
             </button>
           </div>
         </div>

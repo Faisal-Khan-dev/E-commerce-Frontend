@@ -71,8 +71,8 @@ export function StoryNewsletter() {
             <button
               type="submit"
               disabled={status === "loading" || status === "success"}
-              data-hover-bg="#2b1d16"
-              data-hover-text="#ffffff"
+              data-hover-bg="#d4a373"
+              data-hover-text="#000000"
               className="bg-white text-[#312117] text-xs font-semibold tracking-widest uppercase px-6 py-4 rounded-md transition-all duration-200 shrink-0 disabled:opacity-70 cursor-pointer"
             >
               <span>
