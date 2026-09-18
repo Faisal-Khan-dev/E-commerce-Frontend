@@ -55,9 +55,12 @@ export default function CartPage() {
             </p>
             <Link
               href="/shop"
-              className="px-6 py-3 bg-[#312117] text-white text-xs font-semibold tracking-widest uppercase rounded-md hover:bg-[#473224] transition-colors"
+              data-ripple="true"
+              data-hover-bg="#d4a373"
+              data-hover-text="#312117"
+              className="btn inline-block py-4 px-8 bg-[#312117] text-white text-xs font-semibold uppercase tracking-widest rounded-md shadow-md transition-colors duration-200 text-center cursor-pointer"
             >
-              Continue Sourcing
+              <span>Continue Shopping</span>
             </Link>
           </div>
         ) : (

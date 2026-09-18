@@ -185,7 +185,10 @@ function OrderSuccessContent() {
           </Link>
           <Link
             href="/shop"
-            className="flex-1 py-4 bg-white hover:bg-zinc-50 border border-[#4a6b36]/30 hover:border-[#4a6b36]/60 text-[#4a6b36] text-xs font-semibold uppercase tracking-widest rounded-md shadow-2xs transition-all duration-200 flex items-center justify-center gap-2"
+            data-ripple="true"
+            data-hover-bg="#d4a373"
+            data-hover-text="#312117"
+            className="btn flex-1 py-4 bg-[#312117] text-white text-xs font-semibold uppercase tracking-widest rounded-md shadow-md transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer"
           >
             <ShoppingBag className="w-3.5 h-3.5" />
             <span>Continue Shopping</span>

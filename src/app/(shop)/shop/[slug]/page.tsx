@@ -28,6 +28,24 @@ import FlyToCart from "@/components/common/FlyToCart";
 import ReviewModal from "@/components/modals/AddReviewModal";
 import axiosInstance from "@/lib/axios";
 
+function RatingStarItem({ fillPercent, size = "w-4 h-4" }: { fillPercent: number; size?: string }) {
+  if (fillPercent >= 0.95) {
+    return <Star className={`${size} fill-amber-400 stroke-amber-400`} />;
+  }
+  if (fillPercent <= 0.05) {
+    return <Star className={`${size} fill-zinc-200 stroke-zinc-200`} />;
+  }
+  const pctString = `${Math.round(fillPercent * 100)}%`;
+  return (
+    <div className={`relative ${size} shrink-0 inline-block`}>
+      <Star className={`${size} fill-zinc-200 stroke-zinc-200 absolute inset-0`} />
+      <div className="overflow-hidden absolute inset-y-0 left-0" style={{ width: pctString }}>
+        <Star className={`${size} fill-amber-400 stroke-amber-400`} />
+      </div>
+    </div>
+  );
+}
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
@@ -74,7 +92,7 @@ export default function ProductDetailPage({ params }: PageProps) {
         const errorResponse = (err as any).response;
         setError(
           errorResponse?.data?.message ||
-            "Failed to load product. Please check your network connection.",
+          "Failed to load product. Please check your network connection.",
         );
       } else {
         setError(
@@ -227,9 +245,9 @@ export default function ProductDetailPage({ params }: PageProps) {
     product.salePrice > 0 && product.salePrice < product.originalPrice;
   const discountPercent = isSale
     ? Math.round(
-        ((product.originalPrice - product.salePrice) / product.originalPrice) *
-          100,
-      )
+      ((product.originalPrice - product.salePrice) / product.originalPrice) *
+      100,
+    )
     : 0;
 
   const premiumBenefits = [
@@ -317,11 +335,10 @@ export default function ProductDetailPage({ params }: PageProps) {
                   <button
                     key={idx}
                     onClick={() => setActiveImage(img)}
-                    className={`relative aspect-square bg-[#f5efe9]/30 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
-                      activeImage === img
+                    className={`relative aspect-square bg-[#f5efe9]/30 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${activeImage === img
                         ? "border-[#312117] ring-2 ring-[#312117]/20 scale-102"
                         : "border-zinc-200 hover:border-zinc-400"
-                    }`}
+                      }`}
                   >
                     <Image
                       src={img}
@@ -354,23 +371,16 @@ export default function ProductDetailPage({ params }: PageProps) {
             {/* Rating Stars & Customer Review Count */}
             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-zinc-200/60">
               <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, i) => {
-                  const ratingValue = (product.numReviews && product.numReviews > 0) ? (product.ratings || 5) : 5;
-                  const isFilled = i < Math.floor(ratingValue);
+                {[0, 1, 2, 3, 4].map((i) => {
+                  const ratingValue = (product.ratings !== undefined && product.ratings !== null) ? product.ratings : 5;
+                  const fillAmount = Math.max(0, Math.min(1, ratingValue - i));
                   return (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${
-                        isFilled
-                          ? "fill-[#312117] stroke-[#312117]"
-                          : "fill-none stroke-zinc-300"
-                      }`}
-                    />
+                    <RatingStarItem key={i} fillPercent={fillAmount} size="w-4 h-4" />
                   );
                 })}
               </div>
               <span className="text-xs font-medium text-zinc-700">
-                {product.ratings && product.numReviews ? product.ratings.toFixed(1) : "5.0"}
+                {(product.ratings !== undefined && product.ratings !== null) ? product.ratings.toFixed(1) : "5.0"}
               </span>
               <span className="text-zinc-300">•</span>
               <span className="text-xs font-light text-zinc-500">
@@ -436,10 +446,9 @@ export default function ProductDetailPage({ params }: PageProps) {
                   w-full py-4 text-xs font-semibold uppercase tracking-widest rounded-lg shadow-md
                   transition-colors duration-200 cursor-pointer
                   flex items-center justify-center gap-2.5
-                  ${
-                    product.stock
-                      ? "bg-[#312117] text-white shadow-zinc-800/10"
-                      : "bg-zinc-300 text-zinc-500 cursor-not-allowed"
+                  ${product.stock
+                    ? "bg-[#312117] text-white shadow-zinc-800/10"
+                    : "bg-zinc-300 text-zinc-500 cursor-not-allowed"
                   }
                 `}
               >
@@ -461,10 +470,9 @@ export default function ProductDetailPage({ params }: PageProps) {
                   w-full py-4 border border-zinc-300/80 text-xs font-semibold uppercase tracking-widest
                   rounded-lg transition-colors duration-200 cursor-pointer
                   flex items-center justify-center gap-2.5
-                  ${
-                    product.stock
-                      ? "bg-[#f5efe9]/60 text-[#312117]"
-                      : "bg-zinc-100 text-zinc-400 cursor-not-allowed"
+                  ${product.stock
+                    ? "bg-[#f5efe9]/60 text-[#312117]"
+                    : "bg-zinc-100 text-zinc-400 cursor-not-allowed"
                   }
                 `}
               >
@@ -582,27 +590,23 @@ export default function ProductDetailPage({ params }: PageProps) {
                   <div>
                     <div className="flex justify-between items-center mb-4">
                       <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-3.5 h-3.5 ${
-                              i < review.rating
-                                ? "fill-amber-400 stroke-amber-400"
-                                : "fill-none stroke-zinc-200"
-                            }`}
-                          />
-                        ))}
+                        {[0, 1, 2, 3, 4].map((i) => {
+                          const fillAmount = Math.max(0, Math.min(1, (review.rating || 5) - i));
+                          return (
+                            <RatingStarItem key={i} fillPercent={fillAmount} size="w-3.5 h-3.5" />
+                          );
+                        })}
                       </div>
                       <span className="text-[11px] text-zinc-400 font-light">
                         {review.createdAt
                           ? new Date(review.createdAt).toLocaleDateString(
-                              "en-US",
-                              {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                              },
-                            )
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            },
+                          )
                           : "Recent"}
                       </span>
                     </div>
