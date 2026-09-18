@@ -31,7 +31,7 @@ export default function TermsAndPoliciesContent({ initialTab = "terms" }: TermsP
   return (
     <div className="w-full bg-[#fcf9f6] min-h-screen text-zinc-900 pb-20">
       {/* 1. IMMERSIVE HERO HEADER SECTION WITH BACKGROUND IMAGE */}
-      <section className="relative w-full min-h-[440px] sm:min-h-[480px] flex items-center justify-center overflow-hidden py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative w-full min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden py-20 sm:py-32 px-4 sm:px-6 lg:px-8">
         {/* Background Image */}
         <Image
           src="/terms-hero-bg.jpg"
@@ -149,7 +149,7 @@ export default function TermsAndPoliciesContent({ initialTab = "terms" }: TermsP
 
       {/* 2. STICKY NAVIGATION TABS STRIP - ALIGNED TO START / LEFT */}
       <div className="sticky top-0 z-30 bg-[#fcf9f6]/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-start py-3.5 overflow-x-auto scrollbar-none">
             <div className="flex items-center gap-2.5 sm:gap-3">
               {tabs.map((tab) => {
@@ -161,7 +161,7 @@ export default function TermsAndPoliciesContent({ initialTab = "terms" }: TermsP
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 whitespace-nowrap cursor-pointer ${isActive
                         ? "bg-[#312117] text-white border border-[#312117] shadow-sm font-semibold scale-102"
-                        : "bg-white text-zinc-700 border border-stone-200/90 shadow-2xs hover:text-[#312117] hover:border-[#312117] hover:shadow-xs"
+                        : "bg-white text-zinc-700 border border-stone-200/90 shadow-2xs hover:text-[#312117] hover:shadow-xs"
                       }`}
                   >
                     <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#d4a373]" : "text-stone-400"}`} />
@@ -175,7 +175,7 @@ export default function TermsAndPoliciesContent({ initialTab = "terms" }: TermsP
       </div>
 
       {/* 3. MAIN CONTENT CONTAINER - CLEAN SINGLE COLUMN CONTAINER */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 space-y-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 space-y-8">
 
         {/* TAB 1: TERMS OF SERVICE */}
         {activeTab === "terms" && (
@@ -352,7 +352,7 @@ export default function TermsAndPoliciesContent({ initialTab = "terms" }: TermsP
                         <tr>
                           <td className="p-3 font-medium text-zinc-800">Major Cities (Lahore, Karachi, Islamabad, etc.)</td>
                           <td className="p-3">2 – 3 Business Days</td>
-                          <td className="p-3 text-emerald-700 font-semibold">Rs. 250 (Free over Rs. 3,500)</td>
+                          <td className="p-3 text-emerald-700 font-semibold">Rs. 250</td>
                         </tr>
                         <tr>
                           <td className="p-3 font-medium text-zinc-800">Other Cities & Towns</td>
@@ -396,21 +396,21 @@ export default function TermsAndPoliciesContent({ initialTab = "terms" }: TermsP
                   <RotateCcw className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="font-serif text-xl sm:text-2xl text-zinc-900">7-Day Return & Replacement Policy</h2>
-                  <p className="text-xs text-zinc-400 font-light">Simple criteria for product replacements, quality claims, and refunds.</p>
+                  <h2 className="font-serif text-xl sm:text-2xl text-zinc-900">7-Day Return, Exchange & Refund Policy</h2>
+                  <p className="text-xs text-zinc-400 font-light">Simple criteria for product replacements, WhatsApp claims, and refund rules.</p>
                 </div>
               </div>
 
               <div className="space-y-6 text-xs sm:text-sm text-zinc-600 leading-relaxed font-light">
                 <div className="space-y-2">
-                  <h3 className="font-serif font-semibold text-zinc-900 text-sm text-amber-950">7-Day Replacement Guarantee</h3>
+                  <h3 className="font-serif font-semibold text-zinc-900 text-sm text-amber-950">7-Day Return & Exchange Guarantee</h3>
                   <p>
-                    Customer satisfaction is our highest priority. You may request a free replacement or full refund within <strong>7 days of receiving your order</strong> under the following conditions:
+                    Customer satisfaction is our highest priority. You may request a product return or exchange within <strong>7 days of receiving your parcel</strong> under the following conditions:
                   </p>
                   <ul className="space-y-2 pl-1 pt-1">
                     <li className="flex items-start gap-2">
                       <span className="text-[#d4a373] font-bold mt-0.5">•</span>
-                      <span>You received incorrect product items or mismatched weight sizes.</span>
+                      <span>You received incorrect product items or mismatched weight quantities.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-[#d4a373] font-bold mt-0.5">•</span>
@@ -418,9 +418,48 @@ export default function TermsAndPoliciesContent({ initialTab = "terms" }: TermsP
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-[#d4a373] font-bold mt-0.5">•</span>
-                      <span>Quality defects verified upon unboxing (photo or video proof requested).</span>
+                      <span>Quality defects identified upon unboxing (photo or video proof requested).</span>
                     </li>
                   </ul>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="font-serif font-semibold text-zinc-900 text-sm text-amber-950">How to Contact for Return or Exchange</h3>
+                  <div className="p-4 bg-amber-50/80 border border-amber-200/80 rounded-xl text-xs text-amber-950 space-y-2">
+                    <p className="font-medium text-amber-900 flex items-center gap-1.5">
+                      💬 Direct WhatsApp Support for Claims:
+                    </p>
+                    <p>
+                      To initiate a product return or exchange, please contact our official <strong>WhatsApp Support Team</strong> with your Order ID and unboxing photo/video proof. Our support representatives will guide you through the instant replacement process.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="font-serif font-semibold text-zinc-900 text-sm text-amber-950">Payment Issues & Unsubmitted Order Refunds</h3>
+                  <p>
+                    If you have transferred funds via Bank Transfer, EasyPaisa, or JazzCash but your order failed to submit or encountered a technical issue during checkout:
+                  </p>
+                  <ul className="space-y-2 pl-1">
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#d4a373] font-bold mt-0.5">•</span>
+                      <span>Simply share your payment transfer screenshot and transaction ID directly with our <strong>WhatsApp Support</strong>.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#d4a373] font-bold mt-0.5">•</span>
+                      <span>Our accounting team will verify the payment and immediately process your full refund or manual order placement.</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="font-serif font-semibold text-zinc-900 text-sm text-amber-950">Non-Refundable Shipping Charges</h3>
+                  <div className="p-4 bg-stone-100/90 border border-stone-200 rounded-xl text-xs text-zinc-700 space-y-1">
+                    <p className="font-semibold text-zinc-900">🚚 Delivery Charges Policy:</p>
+                    <p>
+                      On all product returns, initial shipping/delivery charges are <strong>strictly non-refundable</strong>. Only the actual product purchase price will be credited back to your account.
+                    </p>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -428,7 +467,7 @@ export default function TermsAndPoliciesContent({ initialTab = "terms" }: TermsP
                   <ul className="space-y-2 pl-1">
                     <li className="flex items-start gap-2">
                       <span className="text-[#d4a373] font-bold mt-0.5">•</span>
-                      <span>Once a returned parcel is inspected at our center, approved refunds are processed within 3–5 working days.</span>
+                      <span>Once a returned item or claim is verified by our team, approved refunds are disbursed within 3–5 working days.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-[#d4a373] font-bold mt-0.5">•</span>
@@ -454,10 +493,9 @@ export default function TermsAndPoliciesContent({ initialTab = "terms" }: TermsP
             <Link
               href="/contact-us"
               data-hover-bg="#d4a373"
-              data-hover-text="#24150d"
-              className="px-6 py-3 bg-white text-[#312117] hover:bg-[#d4a373] hover:text-[#24150d] text-xs font-semibold uppercase tracking-wider rounded-xl shadow-xs transition-colors cursor-pointer flex items-center gap-2"
+              data-hover-text="#000000"
+              className="px-8 py-3.5 bg-white text-[#312117] text-xs font-semibold uppercase tracking-widest rounded-md transition-colors duration-300 shadow-md whitespace-nowrap cursor-pointer shrink-0"
             >
-              <PhoneCall className="w-4 h-4" />
               <span>Contact Support</span>
             </Link>
           </div>

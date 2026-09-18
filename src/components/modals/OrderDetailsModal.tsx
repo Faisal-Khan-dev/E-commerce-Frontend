@@ -274,9 +274,12 @@ export default function OrderDetailsModal({
                 <button
                   type="button"
                   onClick={() => setShowConfirmCancel(true)}
-                  className="w-full py-3 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2"
+                  data-ripple="true"
+                  data-hover-bg="#b91c1c"
+                  data-hover-text="#ffffff"
+                  className="btn w-full py-2.5 bg-red-50/60 border border-red-300/80 hover:border-transparent text-red-700 text-xs font-semibold uppercase tracking-wider rounded-md cursor-pointer flex items-center justify-center gap-2 active:scale-98 transition-colors"
                 >
-                  <XCircle className="w-4 h-4 text-red-600" />
+                  <XCircle className="w-4 h-4 text-red-600 shrink-0" />
                   <span>Cancel Order</span>
                 </button>
               </div>
@@ -306,15 +309,21 @@ export default function OrderDetailsModal({
                     type="button"
                     onClick={handleCancelOrder}
                     disabled={isCancelling}
-                    className="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold uppercase tracking-wider rounded-md transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5 cursor-pointer"
+                    data-ripple="true"
+                    data-hover-bg="#b91c1c"
+                    data-hover-text="#ffffff"
+                    className="btn flex-1 py-2.5 bg-red-50/60 border border-red-300/80 hover:border-transparent text-red-700 text-xs font-semibold uppercase tracking-wider rounded-md disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5 active:scale-98 transition-colors"
                   >
                     {isCancelling ? (
                       <>
-                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-red-600" />
                         <span>Cancelling...</span>
                       </>
                     ) : (
-                      <span>Cancel Order</span>
+                      <>
+                        <XCircle className="w-4 h-4 text-red-600 shrink-0" />
+                        <span>Cancel Order</span>
+                      </>
                     )}
                   </button>
                   <button
@@ -324,9 +333,12 @@ export default function OrderDetailsModal({
                       setCancelError("");
                     }}
                     disabled={isCancelling}
-                    className="px-4 py-2.5 bg-white border border-zinc-300 text-zinc-700 hover:bg-zinc-50 text-xs font-semibold uppercase tracking-wider rounded-md transition-colors cursor-pointer"
+                    data-ripple="true"
+                    data-hover-bg="#d4a373"
+                    data-hover-text="#312117"
+                    className="btn py-2.5 px-4 border border-zinc-500/80 hover:border-transparent text-center text-zinc-800 text-xs font-semibold uppercase tracking-wider rounded-md cursor-pointer inline-flex items-center justify-center active:scale-98"
                   >
-                    Keep Order
+                    <span>Keep Order</span>
                   </button>
                 </div>
               </div>

@@ -81,6 +81,14 @@ a[class*="px-"],
     box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Allow absolute buttons to retain absolute positioning */
+button.absolute,
+button[class*="absolute"],
+a.absolute,
+a[class*="absolute"] {
+  position: absolute !important;
+}
+
 /* Ensure child text, spans, headings, icons, SVG paths, and badges sit strictly on top at z-index 10 */
 button>*,
 .btn>*,

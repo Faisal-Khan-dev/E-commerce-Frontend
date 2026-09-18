@@ -26,7 +26,7 @@ export function ContactFormPanel() {
     try {
       await fetch(WEB_APP_URL, {
         method: "POST",
-        mode: "no-cors", // Bypasses explicit target script domain redirection flags
+        mode: "no-cors",
         headers: {
           "Content-Type": "application/json",
         },
@@ -57,76 +57,107 @@ export function ContactFormPanel() {
             </h2>
 
             <div className="space-y-6">
-              {/* Presence Row item 1 */}
+              {/* Presence Row item 1: Location */}
               <div className="flex gap-4 items-start">
                 <div className="p-2.5 bg-zinc-200/50 rounded-full border border-zinc-300/20 text-zinc-600 shrink-0">
                   <MapPin className="w-4 h-4 stroke-[1.5]" />
                 </div>
                 <div className="space-y-0.5 text-xs sm:text-sm">
                   <h3 className="font-bold tracking-wider uppercase text-[10px] text-zinc-400">
-                    Boutique Atelier
+                    Store Location
                   </h3>
                   <p className="text-zinc-700 font-light leading-relaxed">
-                    742 Heritage Oaks Lane
+                    Qayyumabad, Korangi Road,
                     <br />
-                    Bel Air, California 90077
-                    <br />
-                    United States
+                    Karachi, Pakistan
                   </p>
                 </div>
               </div>
 
-              {/* Presence Row item 2 */}
+              {/* Presence Row item 2: Official Support Email */}
               <div className="flex gap-4 items-start">
                 <div className="p-2.5 bg-zinc-200/50 rounded-full border border-zinc-300/20 text-zinc-600 shrink-0">
                   <Mail className="w-4 h-4 stroke-[1.5]" />
                 </div>
                 <div className="space-y-0.5 text-xs sm:text-sm">
                   <h3 className="font-bold tracking-wider uppercase text-[10px] text-zinc-400">
-                    Concierge Email
+                    Official Support Email
                   </h3>
-                  <p className="text-zinc-800 font-medium hover:underline cursor-pointer">
-                    care@aureum.com
-                  </p>
+                  <a
+                    href="mailto:info@healthybasket.pk"
+                    className="text-zinc-800 font-medium hover:text-[#d4a373] transition-colors"
+                  >
+                    info@healthybasket.pk
+                  </a>
                 </div>
               </div>
 
-              {/* Presence Row item 3 */}
+              {/* Presence Row item 3: WhatsApp / Phone */}
               <div className="flex gap-4 items-start">
                 <div className="p-2.5 bg-zinc-200/50 rounded-full border border-zinc-300/20 text-zinc-600 shrink-0">
                   <Phone className="w-4 h-4 stroke-[1.5]" />
                 </div>
                 <div className="space-y-0.5 text-xs sm:text-sm">
                   <h3 className="font-bold tracking-wider uppercase text-[10px] text-zinc-400">
-                    Private Line
+                    WhatsApp & Helpline
                   </h3>
-                  <p className="text-zinc-700 font-light">+1 (310) 555-0199</p>
+                  <a
+                    href="https://wa.me/923459270654"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-zinc-800 font-medium hover:text-[#25D366] transition-colors block"
+                  >
+                    +92 345 9270654
+                  </a>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Social Presence Tracking Bar */}
-          <div className="space-y-2 pt-4 border-t border-zinc-200/60 max-w-xs">
+          {/* Social Presence Tracking Bar (Footer sequence: Facebook, Instagram, TikTok, WhatsApp) */}
+          <div className="space-y-2 pt-4 border-t border-zinc-200/60">
             <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-zinc-400">
               Follow The Journey
             </h4>
-            <div className="flex gap-6 text-xs font-semibold text-zinc-800 tracking-wide">
-              <span className="hover:text-zinc-500 transition-colors cursor-pointer">
+            <div className="flex gap-5 text-xs font-semibold text-zinc-800 tracking-wide flex-wrap">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#1877F2] transition-colors cursor-pointer"
+              >
+                Facebook
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#E1306C] transition-colors cursor-pointer"
+              >
                 Instagram
-              </span>
-              <span className="hover:text-zinc-500 transition-colors cursor-pointer">
-                Pinterest
-              </span>
-              <span className="hover:text-zinc-500 transition-colors cursor-pointer">
-                LinkedIn
-              </span>
+              </a>
+              <a
+                href="https://tiktok.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-black transition-colors cursor-pointer"
+              >
+                TikTok
+              </a>
+              <a
+                href="https://wa.me/923459270654"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#25D366] transition-colors cursor-pointer"
+              >
+                WhatsApp
+              </a>
             </div>
           </div>
         </div>
 
         {/* Right Side: Interactive Inquiry Box */}
-        <div className="lg:col-span-7 bg-white rounded-2xl border border-zinc-200/30 p-6 sm:p-10 shadow-sm">
+        <div className="lg:col-span-7 bg-white rounded-2xl border border-zinc-200/50 p-6 sm:p-10 shadow-sm">
           <h2 className="text-xl font-serif tracking-wide text-zinc-900 mb-6 text-left">
             Send an Inquiry
           </h2>
@@ -222,8 +253,7 @@ export function ContactFormPanel() {
 
             {status === "success" && (
               <p className="text-xs text-emerald-600 mt-2 font-medium tracking-wide">
-                Thank you! Your message has been sent. We've sent a confirmation
-                summary to your email.
+                Thank you! Your message has been sent. We&apos;ve sent a confirmation summary to your email.
               </p>
             )}
 

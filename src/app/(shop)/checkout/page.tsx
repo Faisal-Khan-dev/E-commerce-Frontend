@@ -307,7 +307,7 @@ export default function CheckoutPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <form
           onSubmit={handleCheckoutSubmit}
-          className="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12 items-start"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12"
         >
           {/* Form Fields UI wrappers */}
           <div className="lg:col-span-2 space-y-12">
@@ -331,11 +331,13 @@ export default function CheckoutPage() {
 
           {/* Cart Sidebar Order Summary UI containing single button trigger */}
           <div className="lg:col-span-1">
-            <OrderSummary
-              items={checkoutItems}
-              subtotal={totalPrice}
-              isSubmitting={isSubmitting}
-            />
+            <div className="sticky top-6 z-30">
+              <OrderSummary
+                items={checkoutItems}
+                subtotal={totalPrice}
+                isSubmitting={isSubmitting}
+              />
+            </div>
           </div>
         </form>
       </main>

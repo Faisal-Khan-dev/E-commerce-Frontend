@@ -94,25 +94,35 @@ export function Navbar() {
 
         <nav
           aria-label="Primary"
-          className="hidden items-center gap-10 md:flex"
+          className="hidden items-center gap-10 md:flex group/nav"
         >
           {navigationItems.map((item) => {
             const isActive =
               item.href === "/"
                 ? pathname === "/"
                 : pathname.startsWith(item.href);
-            const base = "text-[15px] font-medium transition-colors";
-            const normal = "text-black/70 hover:text-black";
-            const active =
-              "underline decoration-black underline-offset-4 text-black";
 
             return (
               <Link
                 key={item.label}
                 href={item.href}
-                className={`${base} ${isActive ? active : normal}`}
+                data-no-ripple="true"
+                className={`py-1 text-[15px] font-medium transition-colors group/item ${
+                  isActive
+                    ? "text-black font-semibold"
+                    : "text-black/70 hover:text-black"
+                }`}
               >
-                {item.label}
+                <span className="relative inline-block">
+                  {item.label}
+                  <span
+                    className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2px] bg-black transition-all duration-300 ease-out ${
+                      isActive
+                        ? "w-full group-hover/nav:w-0 group-hover/item:!w-full"
+                        : "w-0 group-hover/item:w-full"
+                    }`}
+                  />
+                </span>
               </Link>
             );
           })}

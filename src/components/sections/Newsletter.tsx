@@ -56,7 +56,7 @@ export default function NewsletterBanner() {
           </div>
 
           {/* Right Input Form Segment */}
-          <div className="w-full lg:max-w-md">
+          <div className="w-full lg:max-w-xl">
             <form
               onSubmit={handleSubscribe}
               className="flex flex-col sm:flex-row items-stretch gap-3 w-full"

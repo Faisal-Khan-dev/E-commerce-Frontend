@@ -133,7 +133,7 @@ export function ShippingForm({ data, onChange }: ShippingFormProps) {
   };
 
   return (
-    <div className="space-y-6 text-left">
+    <div className="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8 shadow-[0_4px_24px_rgba(49,33,23,0.06)] hover:shadow-[0_8px_32px_rgba(49,33,23,0.12)] transition-all duration-300 space-y-6 text-left">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="w-5 h-5 bg-[#312117] text-white rounded-full flex items-center justify-center font-serif text-xs">
@@ -149,7 +149,7 @@ export function ShippingForm({ data, onChange }: ShippingFormProps) {
           type="button"
           onClick={handleDetectLocation}
           disabled={isLocating}
-          className="inline-flex items-center gap-2 text-xs font-medium text-[#312117] hover:text-white bg-[#f5efe9] hover:bg-[#312117] border border-[#e8ded5] px-3.5 py-1.5 rounded-lg transition-all duration-200 shadow-2xs cursor-pointer active:scale-95 disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-xs font-medium text-[#312117] hover:text-[#312117] bg-[#f5efe9] hover:bg-[#e8ded5] border border-[#e8ded5] hover:border-[#d4c5b9] px-3.5 py-1.5 rounded-lg transition-all duration-200 shadow-2xs cursor-pointer active:scale-95 disabled:opacity-50"
         >
           {isLocating ? (
             <>

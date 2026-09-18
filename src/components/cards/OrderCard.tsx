@@ -58,20 +58,23 @@ export function OrderCard({
         {/* Dual Actions Control Bar */}
         <div className="grid grid-cols-2 gap-3 pt-1">
           <button
+            type="button"
             onClick={() => onViewDetails?.(order.id)}
-            data-hover-bg="#D3A172"
+            data-ripple="true"
+            data-hover-bg="#d4a373"
             data-hover-text="#312117"
-            className="py-2.5 rounded-md bg-white border border-stone-300 text-[#312117] hover:text-[#312117] text-[10px] font-semibold uppercase tracking-wider transition-colors cursor-pointer shadow-2xs"
+            className="btn py-2.5 px-3 border border-zinc-500/80 hover:border-transparent text-center text-zinc-800 text-[10px] font-semibold uppercase tracking-wider rounded-md cursor-pointer inline-flex items-center justify-center active:scale-98"
           >
-            Order Details
+            <span>Order Details</span>
           </button>
           <button
+            type="button"
             onClick={() => onBuyAgain?.(order.id)}
-            data-hover-bg="#D3A172"
-            data-hover-text="#312117"
-            className="py-2.5 rounded-md bg-[#312117] text-white hover:text-[#312117] text-[10px] font-semibold uppercase tracking-wider transition-colors cursor-pointer shadow-2xs"
+            data-ripple="true"
+            data-hover-text="#000000"
+            className="btn py-2.5 px-3 bg-[#402e22] text-center text-zinc-100 text-[10px] font-semibold uppercase tracking-wider rounded-md shadow-md cursor-pointer inline-flex items-center justify-center active:scale-98"
           >
-            Buy Again
+            <span>Buy Again</span>
           </button>
         </div>
       </div>

@@ -21,7 +21,7 @@ export function OrderSummary({
   isSubmitting,
 }: OrderSummaryProps) {
   return (
-    <div className="bg-[#f5efe9]/70 rounded-xl p-6 sm:p-8 border border-zinc-200/40 sticky top-6 flex flex-col justify-between">
+    <div className="bg-white border border-stone-200/90 rounded-2xl p-6 sm:p-8 shadow-xs flex flex-col justify-between">
       <div>
         <h3 className="text-[10px] font-bold tracking-[0.15em] uppercase text-zinc-400 mb-6 text-left">
           Your Order
