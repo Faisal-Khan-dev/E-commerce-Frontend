@@ -1,5 +1,6 @@
 import { AboutUsHero } from "../../../components/sections/AboutUsHero";
 import { StorySourcing } from "../../../components/sections/Sourcing";
+import { SourcingEthics } from "../../../components/sections/SourcingEthics";
 import { StoryStandards } from "../../../components/sections/StoryStandards";
 import { StoryTrustBadges } from "../../../components/sections/TrustBadges";
 import NewsletterBanner from "../../../components/sections/Newsletter";
@@ -19,13 +20,16 @@ export default function BrandStoryPage() {
       {/* 2. Philosophy & Sourcing Core Context Component Block */}
       <StorySourcing />
 
-      {/* 3. Meticulous Production Pillars Matrix Component Grid */}
+      {/* 3. In-House Sourcing & Extraction Process Portion */}
+      <SourcingEthics />
+
+      {/* 4. Meticulous Production Pillars Matrix Component Grid */}
       <StoryStandards />
 
-      {/* 4. Verification Badges Row Ribbon Stripe */}
+      {/* 5. Verification Badges Row Ribbon Stripe */}
       <StoryTrustBadges />
 
-      {/* 5. Join Our Community Newsletter Subscription Banner Container */}
+      {/* 6. Join Our Community Newsletter Subscription Banner Container */}
       <NewsletterBanner />
     </div>
   );

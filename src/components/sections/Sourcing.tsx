@@ -1,3 +1,5 @@
+"use client";
+
 // components/story/story-sourcing.tsx
 import Image from "next/image";
 
@@ -25,13 +27,18 @@ export function StorySourcing() {
             </p>
           </div>
           <div className="pt-2">
-            <button
-              data-ripple="true"
-              data-hover-text="#000000"
-              className="btn px-8 py-3.5 bg-[#402e22] text-center text-zinc-100 text-sm font-semibold tracking-wide rounded-md shadow-lg cursor-pointer inline-flex items-center justify-center"
+            <a
+              href="#sourcing-ethics"
+              onClick={(e) => {
+                e.preventDefault();
+                document
+                  .getElementById("sourcing-ethics")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="btn px-8 py-3.5 bg-[#402e22] text-center text-zinc-100 text-sm font-semibold tracking-wide rounded-md shadow-lg cursor-pointer inline-flex items-center justify-center hover:bg-[#312117] transition-all"
             >
               <span>OUR SOURCING ETHICS</span>
-            </button>
+            </a>
           </div>
         </div>
 
