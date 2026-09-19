@@ -211,7 +211,7 @@ export function PaymentForm({
           {/* Precise Payment Method Steps & Guarantee */}
           <div className="p-4 bg-[#fffdfb] border border-amber-200/80 rounded-xl text-xs text-zinc-700 space-y-2.5 font-light">
             <p className="font-semibold text-amber-950 flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-amber-800" /> Precise Payment Instructions:
+              <CheckCircle2 className="w-4 h-4 text-amber-800" />Payment Instructions:
             </p>
             <ul className="space-y-2 text-[11px] text-zinc-600 pl-1">
               <li className="flex items-start gap-2">
@@ -317,7 +317,7 @@ export function PaymentForm({
           {/* Precise Payment Method Steps & Guarantee */}
           <div className="p-4 bg-emerald-50/60 border border-emerald-200/80 rounded-xl text-xs text-zinc-700 space-y-2.5 font-light">
             <p className="font-semibold text-emerald-950 flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-700" /> Precise Payment Instructions:
+              <CheckCircle2 className="w-4 h-4 text-emerald-700" />Payment Instructions:
             </p>
             <ul className="space-y-2 text-[11px] text-zinc-600 pl-1">
               <li className="flex items-start gap-2">
@@ -398,7 +398,7 @@ export function PaymentForm({
           {/* Precise Payment Method Steps & Guarantee */}
           <div className="p-4 bg-rose-50/50 border border-rose-200/80 rounded-xl text-xs text-zinc-700 space-y-2.5 font-light">
             <p className="font-semibold text-rose-950 flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-rose-700" /> Precise Payment Instructions:
+              <CheckCircle2 className="w-4 h-4 text-rose-700" />Payment Instructions:
             </p>
             <ul className="space-y-2 text-[11px] text-zinc-600 pl-1">
               <li className="flex items-start gap-2">
