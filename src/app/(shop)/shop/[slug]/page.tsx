@@ -317,12 +317,17 @@ export default function ProductDetailPage({ params }: PageProps) {
               />
 
               {/* Floating Quality Overlay Badges */}
-              <div className="absolute top-4 left-4 flex flex-col gap-2">
+              <div className="absolute top-4 left-4">
                 <span className="bg-white/90 backdrop-blur-md text-[#312117] text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full border border-zinc-200/50 shadow-2xs flex items-center gap-1.5">
                   <Sparkles className="w-3 h-3 text-amber-600 fill-amber-600" /> Premium Organic
                 </span>
-                {isSale && <ScallopedDiscountBadge percent={discountPercent} />}
               </div>
+
+              {isSale && (
+                <div className="absolute top-2 right-2 z-10">
+                  <ScallopedDiscountBadge percent={discountPercent} />
+                </div>
+              )}
             </div>
 
             {/* Gallery Thumbnails Strip */}
@@ -333,8 +338,8 @@ export default function ProductDetailPage({ params }: PageProps) {
                     key={idx}
                     onClick={() => setActiveImage(img)}
                     className={`relative aspect-square bg-[#f5efe9]/30 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${activeImage === img
-                        ? "border-[#312117] ring-2 ring-[#312117]/20 scale-102"
-                        : "border-zinc-200 hover:border-zinc-400"
+                      ? "border-[#312117] ring-2 ring-[#312117]/20 scale-102"
+                      : "border-zinc-200 hover:border-zinc-400"
                       }`}
                   >
                     <Image

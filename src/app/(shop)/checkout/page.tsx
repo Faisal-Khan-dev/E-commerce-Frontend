@@ -169,7 +169,8 @@ export default function CheckoutPage() {
       const formData = new FormData();
       formData.append("customerId", user._id);
       formData.append("paymentMethod", paymentMethod);
-      formData.append("shippingInfo", JSON.stringify(shippingInfo));
+      formData.append("shippingInfo", JSON.stringify({ ...shippingInfo, cost: 250 }));
+      formData.append("shippingCost", "250");
       formData.append("orderItems", JSON.stringify(resolvedOrderItems));
 
       if (screenshotFile) {
