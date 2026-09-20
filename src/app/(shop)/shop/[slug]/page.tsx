@@ -27,6 +27,7 @@ import { useAuth } from "@/context/AuthContext";
 import FlyToCart from "@/components/common/FlyToCart";
 import ReviewModal from "@/components/modals/AddReviewModal";
 import axiosInstance from "@/lib/axios";
+import { ScallopedDiscountBadge } from "@/components/cards/ProductCard";
 
 function RatingStarItem({ fillPercent, size = "w-4 h-4" }: { fillPercent: number; size?: string }) {
   if (fillPercent >= 0.95) {
@@ -320,11 +321,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                 <span className="bg-white/90 backdrop-blur-md text-[#312117] text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full border border-zinc-200/50 shadow-2xs flex items-center gap-1.5">
                   <Sparkles className="w-3 h-3 text-amber-600 fill-amber-600" /> Premium Organic
                 </span>
-                {isSale && (
-                  <span className="bg-[#312117] text-white text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full shadow-2xs">
-                    Save {discountPercent}%
-                  </span>
-                )}
+                {isSale && <ScallopedDiscountBadge percent={discountPercent} />}
               </div>
             </div>
 
@@ -394,7 +391,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                 Rs. {Math.round(product.salePrice || product.originalPrice).toLocaleString()}
               </span>
               {isSale && (
-                <span className="line-through text-base text-zinc-400 font-light">
+                <span className="line-through text-stone-400 text-base font-light">
                   Rs. {Math.round(product.originalPrice).toLocaleString()}
                 </span>
               )}

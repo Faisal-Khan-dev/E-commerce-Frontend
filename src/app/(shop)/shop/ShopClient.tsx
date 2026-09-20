@@ -64,7 +64,9 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
               id: product.slug,
               _id: product._id,
               name: product.name,
-              price: product.salePrice || product.originalPrice,
+              price: product.salePrice && product.salePrice > 0 ? product.salePrice : product.originalPrice,
+              originalPrice: product.originalPrice,
+              salePrice: product.salePrice,
               rating: product.ratings && product.ratings > 0 ? product.ratings : 5,
               reviewsCount: product.numReviews || 0,
               imageSrc: product.images?.[0] || "/bestseller-4.png",
@@ -165,9 +167,11 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
                   className="w-full appearance-none pl-4 pr-10 py-2.5 bg-stone-50 hover:bg-white text-xs font-semibold text-stone-800 border border-stone-200/90 rounded-xl outline-none focus:outline-none focus:bg-white focus:border-stone-300 focus:ring-0 cursor-pointer transition-all shadow-xs"
                 >
                   <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
                   <option value="low-to-high">Price: Low to High</option>
                   <option value="high-to-low">Price: High to Low</option>
                   <option value="top-rated">Highest Rated</option>
+                  <option value="most-reviewed">Most Reviewed</option>
                 </select>
                 <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500 pointer-events-none" />
               </div>
