@@ -102,12 +102,12 @@ export function ContactFormPanel() {
                     WhatsApp & Helpline
                   </h3>
                   <a
-                    href="https://wa.me/923459270654"
+                    href="https://wa.me/923272735705"
                     target="_blank"
                     rel="noreferrer"
                     className="text-zinc-800 font-medium hover:text-[#25D366] transition-colors block"
                   >
-                    +92 345 9270654
+                    +92 327 2735705
                   </a>
                 </div>
               </div>
@@ -121,7 +121,7 @@ export function ContactFormPanel() {
             </h4>
             <div className="flex gap-5 text-xs font-semibold text-zinc-800 tracking-wide flex-wrap">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/share/1Er32zkxUz/"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-[#1877F2] transition-colors cursor-pointer"
@@ -129,7 +129,7 @@ export function ContactFormPanel() {
                 Facebook
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/healthy_basket24?stkn=MXRrbDVzMnR4M2VkYw=="
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-[#E1306C] transition-colors cursor-pointer"
@@ -137,7 +137,7 @@ export function ContactFormPanel() {
                 Instagram
               </a>
               <a
-                href="https://tiktok.com"
+                href="https://www.tiktok.com/@khan135652?_r=1&_t=ZS-99wpJbitgqP"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-black transition-colors cursor-pointer"
@@ -145,7 +145,7 @@ export function ContactFormPanel() {
                 TikTok
               </a>
               <a
-                href="https://wa.me/923459270654"
+                href="https://wa.me/923272735705"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-[#25D366] transition-colors cursor-pointer"

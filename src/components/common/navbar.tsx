@@ -60,7 +60,7 @@ export function Navbar() {
   const pathname = usePathname() || "/";
   const router = useRouter();
   const { totalItems, cartIconRef, lastAdded } = useCart();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, openAuthModal } = useAuth();
   const [pulse, setPulse] = useState(false);
 
   // Trigger pulse animation whenever a new item is added
@@ -76,7 +76,7 @@ export function Navbar() {
   const handleAccountClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (!isAuthenticated) {
-      router.push(`/login?redirect=/account/orders`);
+      openAuthModal("login");
     } else {
       router.push("/account/orders");
     }

@@ -49,7 +49,7 @@ const isMongoObjectId = (value?: string) => /^[a-f\d]{24}$/i.test(value || "");
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, totalPrice, clearCart } = useCart();
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, isAuthenticated, loading: authLoading, openAuthModal } = useAuth();
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("COD");
   const [screenshotFile, setScreenshotFile] = useState<File | null>(null);
@@ -73,12 +73,12 @@ export default function CheckoutPage() {
     cvc: "",
   });
 
-  // Protect route based on current auth loading state
+  // Open auth modal if unauthenticated when accessing checkout
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
-      router.push("/login?redirect=/checkout");
+      openAuthModal("login");
     }
-  }, [authLoading, isAuthenticated, router]);
+  }, [authLoading, isAuthenticated, openAuthModal]);
 
   // Auto-restore saved shipping details for logged-in user on load
   useEffect(() => {
@@ -136,7 +136,8 @@ export default function CheckoutPage() {
 
     try {
       if (!user?._id) {
-        throw new Error("Please sign in again before placing your order.");
+        openAuthModal("login");
+        throw new Error("Please sign in or create an account before placing your order.");
       }
 
       const resolvedOrderItems = await Promise.all(

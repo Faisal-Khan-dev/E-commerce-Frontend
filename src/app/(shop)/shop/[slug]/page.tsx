@@ -70,7 +70,7 @@ export default function ProductDetailPage({ params }: PageProps) {
   const [flyTrigger, setFlyTrigger] = useState(0);
 
   // 2. Destructure active user identity profile variables and authentication flags from context matrix
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, openAuthModal } = useAuth();
 
   const fetchProductDetails = useCallback(async () => {
     setLoading(true);
@@ -141,8 +141,7 @@ export default function ProductDetailPage({ params }: PageProps) {
   // Handle Auth Gate validation checks before rendering Modal Matrix using state context parameters
   const handleWriteReviewClick = () => {
     if (!isAuthenticated || !user) {
-      // Direct context routing to pass redirection parameters seamlessly back down to this slug
-      router.push(`/login?redirect=/shop/${slug}`);
+      openAuthModal("login");
       return;
     }
 

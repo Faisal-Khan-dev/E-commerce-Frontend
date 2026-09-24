@@ -11,7 +11,7 @@ import { Loader2, AlertCircle, ShoppingBag, ChevronLeft, ChevronRight } from "lu
 function CustomerOrdersContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, isAuthenticated, loading: authLoading, openAuthModal } = useAuth();
 
   const typeParam = searchParams.get("type") || "active";
   const isHistoryTab = typeParam === "history";
@@ -41,9 +41,9 @@ function CustomerOrdersContent() {
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
-      router.push("/login?redirect=/account/orders");
+      openAuthModal("login");
     }
-  }, [isAuthenticated, authLoading, router]);
+  }, [isAuthenticated, authLoading, openAuthModal]);
 
   // Server-side database pagination fetcher
   const fetchCustomerOrders = useCallback(async () => {

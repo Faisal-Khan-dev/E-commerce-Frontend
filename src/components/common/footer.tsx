@@ -142,7 +142,7 @@ export function Footer() {
               {/* Social Icons with Hover Glow */}
               <div className="flex items-center gap-3">
                 <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/share/1Er32zkxUz/"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Facebook"
@@ -152,7 +152,7 @@ export function Footer() {
                 </a>
 
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/healthy_basket24?stkn=MXRrbDVzMnR4M2VkYw=="
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Instagram"
@@ -162,7 +162,7 @@ export function Footer() {
                 </a>
 
                 <a
-                  href="https://tiktok.com"
+                  href="https://www.tiktok.com/@khan135652?_r=1&_t=ZS-99wpJbitgqP"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="TikTok"
@@ -172,7 +172,7 @@ export function Footer() {
                 </a>
 
                 <a
-                  href="https://wa.me/923459270654"
+                  href="https://wa.me/923272735705"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="WhatsApp"

@@ -10,6 +10,7 @@ import {
   ReactNode,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import AuthModal from "@/components/common/AuthModal";
 
 // Quick utility functions for vanilla cookie management
 const setCookie = (name: string, value: string, days: number) => {
@@ -43,6 +44,10 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
+  isAuthModalOpen: boolean;
+  authModalMode: "login" | "signup";
+  openAuthModal: (mode?: "login" | "signup") => void;
+  closeAuthModal: () => void;
   login: (token: string, userData: User, rememberMeDays?: number) => void;
   signup: () => void;
   logout: () => void;
@@ -97,6 +102,8 @@ function OAuthListener({
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [authModalMode, setAuthModalMode] = useState<"login" | "signup">("login");
   const router = useRouter();
 
   // 1. Initial Session Check on mount (runs strictly ONCE)
@@ -116,37 +123,61 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, []);
 
+  const openAuthModal = (mode: "login" | "signup" = "login") => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
+
   const handleOAuthSuccess = (userData: User, targetDestination: string) => {
     setUser(userData);
     setLoading(false);
-    router.push(targetDestination);
+    setIsAuthModalOpen(false);
+    if (targetDestination && targetDestination !== "/") {
+      router.push(targetDestination);
+    }
   };
 
   const login = (token: string, userData: User, rememberMeDays = 7) => {
     setCookie("authToken", token, rememberMeDays);
     localStorage.setItem("authUser", JSON.stringify(userData));
     setUser(userData);
-    router.push("/");
+    setIsAuthModalOpen(false);
   };
 
   const signup = () => {
-    router.push("/");
+    setIsAuthModalOpen(false);
   };
 
   const logout = () => {
     eraseCookie("authToken");
     localStorage.removeItem("authUser");
     setUser(null);
-    router.push("/login");
+    setIsAuthModalOpen(false);
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated: !!user, loading, login, signup, logout }}
+      value={{
+        user,
+        isAuthenticated: !!user,
+        loading,
+        isAuthModalOpen,
+        authModalMode,
+        openAuthModal,
+        closeAuthModal,
+        login,
+        signup,
+        logout,
+      }}
     >
       <Suspense fallback={null}>
         <OAuthListener onAuthSuccess={handleOAuthSuccess} />
       </Suspense>
+      <AuthModal />
       {children}
     </AuthContext.Provider>
   );
