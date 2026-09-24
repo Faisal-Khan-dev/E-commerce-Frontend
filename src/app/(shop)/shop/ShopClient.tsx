@@ -21,10 +21,19 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [products, setProducts] = useState<ShopProduct[]>(initialProducts);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pagination, setPagination] = useState(initialPagination);
+
+  // Debounce search input by 350ms to prevent instant API spamming on keypresses
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   const handleCategoryChange = useCallback((categories: string[]) => {
     setSelectedCategories(categories);
@@ -40,6 +49,8 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
       return;
     }
 
+    const controller = new AbortController();
+
     const fetchProducts = async () => {
       setLoading(true);
       setError("");
@@ -54,7 +65,8 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
           limit: 10,
           sort: sortBy,
           category: categoryQuery,
-          search: searchTerm || undefined,
+          search: debouncedSearchTerm || undefined,
+          signal: controller.signal,
         });
 
         if (response.success) {
@@ -79,7 +91,10 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
           setProducts(mappedProducts);
           setPagination(response.pagination);
         }
-      } catch (err) {
+      } catch (err: any) {
+        if (err?.name === "CanceledError" || err?.name === "AbortError" || err?.code === "ERR_CANCELED") {
+          return;
+        }
         console.error("Failed to fetch products:", err);
         setError("Failed to load products. Please try again.");
       } finally {
@@ -88,7 +103,11 @@ export default function ShopClient({ initialProducts, initialPagination }: ShopC
     };
 
     fetchProducts();
-  }, [currentPage, sortBy, selectedCategories, searchTerm]);
+
+    return () => {
+      controller.abort();
+    };
+  }, [currentPage, sortBy, selectedCategories, debouncedSearchTerm]);
 
   return (
     <div className="w-full bg-white min-h-screen text-zinc-900 pb-16">

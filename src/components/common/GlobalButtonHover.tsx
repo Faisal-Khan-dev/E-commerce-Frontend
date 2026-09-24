@@ -33,9 +33,9 @@ export default function GlobalButtonHover() {
       'button, .btn, a.btn, [role="button"], input[type="submit"], input[type="button"], a[class*="py-"], a[class*="px-"], [data-ripple="true"]';
 
     const handlePointerEnter = (e: PointerEvent | MouseEvent) => {
-      const target = (e.target as HTMLElement)?.closest(
-        BUTTON_SELECTOR
-      ) as HTMLElement | null;
+      const target = (e.target && "closest" in e.target && typeof (e.target as Element).closest === "function")
+        ? (e.target as Element).closest(BUTTON_SELECTOR) as HTMLElement | null
+        : null;
 
       if (!target || target.getAttribute("data-no-ripple") === "true") return;
 
