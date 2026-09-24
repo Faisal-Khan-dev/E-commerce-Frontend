@@ -40,3 +40,8 @@ export default function RootLayout({
     </html>
   );
 }
+        </AuthProvider >
+      </body >
+    </html >
+  );
+}
