@@ -107,20 +107,18 @@ export function Navbar() {
                 key={item.label}
                 href={item.href}
                 data-no-ripple="true"
-                className={`py-1 text-[15px] font-medium transition-colors group/item ${
-                  isActive
+                className={`py-1 text-[15px] font-medium transition-colors group/item ${isActive
                     ? "text-black font-semibold"
                     : "text-black/70 hover:text-black"
-                }`}
+                  }`}
               >
                 <span className="relative inline-block">
                   {item.label}
                   <span
-                    className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2px] bg-black transition-all duration-300 ease-out ${
-                      isActive
+                    className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2px] bg-black transition-all duration-300 ease-out ${isActive
                         ? "w-full group-hover/nav:w-0 group-hover/item:!w-full"
                         : "w-0 group-hover/item:w-full"
-                    }`}
+                      }`}
                   />
                 </span>
               </Link>
