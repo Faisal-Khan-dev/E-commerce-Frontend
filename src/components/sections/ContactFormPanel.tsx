@@ -129,7 +129,7 @@ export function ContactFormPanel() {
                 Facebook
               </a>
               <a
-                href="https://www.instagram.com/healthy_basket24?stkn=MXRrbDVzMnR4M2VkYw=="
+                href="https://www.instagram.com/healthy_basket13?stkn=ajZ3NjZydGl5a3po"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-[#E1306C] transition-colors cursor-pointer"
@@ -145,7 +145,7 @@ export function ContactFormPanel() {
                 TikTok
               </a>
               <a
-                href="https://wa.me/923272735705"
+                href="https://whatsapp.com/channel/0029Vb9OFaC3LdQdkwUspY1Q"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-[#25D366] transition-colors cursor-pointer"
